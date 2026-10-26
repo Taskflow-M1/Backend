@@ -1,13 +1,52 @@
+# Dependencies
 node_modules/
-dist/
-coverage/
+.npm/
+.pnp.*
 
+# Build & TypeScript caches
+dist/
+build/
+*.tsbuildinfo
+
+# Environment variables & secrets
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.cert
 
+# Tests & coverage
+coverage/
+.nyc_output/
+junit.xml
+
+# Linting & tool caches
+.eslintcache
+.cache/
+
+# Local uploads (e.g. user avatars in development)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
+# OS & Editor files
 .DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
 
+# Temporary directories
+tmp/
+temp/

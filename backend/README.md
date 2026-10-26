@@ -41,9 +41,38 @@ Toutes les commandes s'exécutent depuis le dossier `backend/` :
 - `npm run build` : compile le code TypeScript vers le dossier `dist/`.
 - `npm start` : lance la version compilée (`dist/server.js`).
 
+## Architecture actuelle
+
+```text
+backend/src/
+├── config/         # Chargement et validation des variables d'environnement
+├── middlewares/    # Validation Zod et gestion centralisée des erreurs
+├── modules/        # Modules fonctionnels (routes -> controller -> service)
+│   └── health/
+├── types/          # Types partagés de réponses API
+├── utils/          # Classe AppError et constantes/messages centralisés
+├── routes.ts       # Routeur principal monté sur /api
+├── app.ts          # Configuration de l'application Express
+└── server.ts       # Démarrage du serveur HTTP
+```
+
+## Format des erreurs API
+
+Toutes les erreurs applicatives respectent le format contractuel JSON :
+
+```json
+{
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "Message lisible"
+  }
+}
+```
+
+Les codes et messages sont centralisés dans `src/utils/constants.ts`.
+
 ## Endpoints disponibles
 
 | Méthode | Route | Accès | Réponse |
 |---|---|---|---|
 | `GET` | `/api/health` | Public | `200 OK` — `{"status":"ok"}` |
-

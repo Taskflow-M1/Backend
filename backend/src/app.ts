@@ -1,7 +1,12 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env';
+import apiRouter from './routes';
+import {
+  errorMiddleware,
+  notFoundMiddleware,
+} from './middlewares/error.middleware';
 
 const app = express();
 
@@ -14,9 +19,9 @@ app.use(
 );
 app.use(express.json({ limit: '100kb' }));
 
-app.get('/api/health', (_req: Request, res: Response) => {
-  res.status(200).json({ status: 'ok' });
-});
+app.use('/api', apiRouter);
+
+app.use(notFoundMiddleware);
+app.use(errorMiddleware);
 
 export default app;
-
