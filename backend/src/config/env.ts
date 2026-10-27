@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env'), quiet: true });
 
+const PLACEHOLDER_JWT_SECRET =
+  'replace-with-a-random-secret-at-least-32-characters';
+
 function parsePort(rawPort: string | undefined): number {
   const port = Number(rawPort ?? 3000);
 
@@ -22,9 +25,65 @@ function parseCorsOrigins(rawOrigins: string | undefined): string[] {
     .filter(Boolean);
 }
 
+function parseMongoUri(rawUri: string | undefined, nodeEnv: string): string {
+  const uri =
+    nodeEnv === 'test'
+      ? (process.env.MONGODB_TEST_URI ??
+        'mongodb://127.0.0.1:27017/taskflow_test')
+      : rawUri;
+
+  if (!uri) {
+    if (nodeEnv === 'production') {
+      throw new Error('Missing required MONGODB_URI environment variable');
+    }
+    return 'mongodb://127.0.0.1:27017/taskflow';
+  }
+
+  if (!uri.startsWith('mongodb://') && !uri.startsWith('mongodb+srv://')) {
+    throw new Error(
+      'Invalid MONGODB_URI environment variable: must start with mongodb:// or mongodb+srv://',
+    );
+  }
+
+  return uri;
+}
+
+function parseJwtSecret(
+  rawSecret: string | undefined,
+  nodeEnv: string,
+): string {
+  if (nodeEnv === 'test') {
+    return (
+      process.env.JWT_TEST_SECRET ??
+      'test-only-taskflow-jwt-secret-32-chars!'
+    );
+  }
+
+  const secret = rawSecret?.trim();
+
+  if (nodeEnv === 'production') {
+    if (!secret || secret.length < 32 || secret === PLACEHOLDER_JWT_SECRET) {
+      throw new Error(
+        'JWT_SECRET must be set to a strong secret (at least 32 characters) in production',
+      );
+    }
+    return secret;
+  }
+
+  if (!secret || secret === PLACEHOLDER_JWT_SECRET) {
+    return 'dev-only-taskflow-jwt-secret-32-chars!';
+  }
+
+  return secret;
+}
+
+const nodeEnv = process.env.NODE_ENV ?? 'development';
+
 export const env = {
-  nodeEnv: process.env.NODE_ENV ?? 'development',
+  nodeEnv,
   port: parsePort(process.env.PORT),
   corsOrigins: parseCorsOrigins(process.env.CORS_ORIGIN),
+  mongodbUri: parseMongoUri(process.env.MONGODB_URI, nodeEnv),
+  jwtSecret: parseJwtSecret(process.env.JWT_SECRET, nodeEnv),
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN?.trim() || '24h',
 };
-

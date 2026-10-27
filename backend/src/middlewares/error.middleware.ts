@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+import mongoose from 'mongoose';
 import { ZodError } from 'zod';
+import { redactMongoUri } from '../config/database';
 import { env } from '../config/env';
 import { ApiErrorResponse } from '../types/api.types';
 import { AppError } from '../utils/app-error';
@@ -21,13 +23,6 @@ function isPayloadTooLargeError(err: unknown): boolean {
     err !== null &&
     'type' in err &&
     err.type === 'entity.too.large'
-  );
-}
-
-function sanitizeForLog(value: string): string {
-  return value.replace(
-    /(mongodb(?:\+srv)?:\/\/[^:\s]+:)([^@\s]+)(@)/gi,
-    '$1[REDACTED]$3',
   );
 }
 
@@ -74,6 +69,26 @@ export function errorMiddleware(
     return;
   }
 
+  if (err instanceof mongoose.Error.CastError) {
+    res.status(400).json({
+      error: {
+        code: ERROR_CODES.INVALID_INPUT,
+        message: MESSAGES.VALIDATION.INVALID_OBJECT_ID,
+      },
+    });
+    return;
+  }
+
+  if (err instanceof mongoose.Error.ValidationError) {
+    res.status(400).json({
+      error: {
+        code: ERROR_CODES.INVALID_INPUT,
+        message: MESSAGES.VALIDATION.INVALID_INPUT,
+      },
+    });
+    return;
+  }
+
   if (isMalformedJsonError(err)) {
     res.status(400).json({
       error: {
@@ -98,8 +113,8 @@ export function errorMiddleware(
     const details =
       err instanceof Error
         ? env.nodeEnv === 'development' && err.stack
-          ? sanitizeForLog(err.stack)
-          : `${err.name}: ${sanitizeForLog(err.message)}`
+          ? redactMongoUri(err.stack)
+          : `${err.name}: ${redactMongoUri(err.message)}`
         : 'Unknown error';
     console.error('[Unhandled Error]', details);
   }

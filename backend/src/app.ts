@@ -10,6 +10,7 @@ import {
 
 const app = express();
 
+app.disable('x-powered-by');
 app.use(helmet());
 app.use(
   cors({
@@ -17,7 +18,7 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json({ limit: '100kb' }));
+app.use(express.json({ limit: '250kb' }));
 
 app.use('/api', apiRouter);
 

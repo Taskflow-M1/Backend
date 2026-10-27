@@ -13,3 +13,14 @@ export interface ApiListResponse<T> {
   items: T[];
 }
 
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface ApiPaginatedListResponse<T> extends ApiListResponse<T> {
+  pagination: PaginationMeta;
+}
+
