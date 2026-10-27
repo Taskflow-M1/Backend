@@ -2,9 +2,9 @@
 
 API REST complète, sécurisée et documentée du projet **TaskFlow**, réalisée en **Node.js**, **Express 5**, **TypeScript**, **MongoDB / Mongoose** et **JWT**.
 
-Ce backend répond simultanément à deux exigences :
-1. **Le contrat pédagogique individuel EFREI API v1** (`/api/health`, `/api/auth/register`, `/api/auth/login`, `/api/tasks`, `/api/tasks/:id`) avec cloisonnement strict des tâches personnelles par utilisateur, statuts HTTP exacts et enveloppe d'erreur normalisée.
-2. **La plateforme collaborative de gestion de projets type Jira** (`/api/users*`, `/api/teams*`, `/api/projects*`, `/api/features*`, `/api/tickets*`, `/api/comments*`, `/api/dashboard`) intégrant gestion d'équipes par rôles, clés de tickets séquentielles (`TFW-1`), tableau Kanban à 4 colonnes, discussions, journal d'audit automatique et tableau de bord statistique.
+Ce backend couvre deux espaces complémentaires :
+1. **L'espace de tâches personnelles** (`/api/health`, `/api/auth/register`, `/api/auth/login`, `/api/tasks`, `/api/tasks/:id`) avec cloisonnement strict des tâches par utilisateur, statuts HTTP exacts et enveloppe d'erreur normalisée.
+2. **La plateforme collaborative de gestion de projets** (`/api/users*`, `/api/teams*`, `/api/projects*`, `/api/features*`, `/api/tickets*`, `/api/comments*`, `/api/dashboard`) intégrant gestion d'équipes par rôles, clés de tickets séquentielles (`TFW-1`), tableau Kanban à 4 colonnes, discussions, journal d'audit automatique et tableau de bord statistique.
 
 ---
 
@@ -19,7 +19,7 @@ Ce backend répond simultanément à deux exigences :
 7. [Rôles collaboratifs et workflow Kanban](#7-rôles-collaboratifs-et-workflow-kanban)
 8. [Catalogue des endpoints REST](#8-catalogue-des-endpoints-rest)
 9. [Guide d'intégration Frontend React](#9-guide-dintégration-frontend-react)
-10. [Notions TP 9 EFREI : Vite, Babel, Webpack et CI/CD](#10-notions-tp-9-efrei--vite-babel-webpack-et-cicd)
+10. [Outils de build (Vite, Babel, Webpack) et pipeline CI/CD](#10-outils-de-build-vite-babel-webpack-et-pipeline-cicd)
 11. [Sécurité, limites connues et pistes d'évolution](#11-sécurité-limites-connues-et-pistes-dévolution)
 
 ---
@@ -122,7 +122,7 @@ Toutes les commandes ci-dessous s'exécutent depuis `backend/` (ou depuis la rac
 
 ### URLs principales (en remplaçant `<PORT>` par `3000` ou votre `PORT` local)
 
-- **Healthcheck EFREI** : `http://localhost:<PORT>/api/health`
+- **Healthcheck** : `http://localhost:<PORT>/api/health`
 - **Documentation Swagger UI interactive** : `http://localhost:<PORT>/api/docs`
 - **Spécification brute OpenAPI 3.0.3 (JSON)** : `http://localhost:<PORT>/api/docs.json`
 - **Frontend React (Vite)** : `http://localhost:5173`
@@ -151,7 +151,7 @@ backend/
 │   │   ├── features/               # Fonctionnalités produit par projet (/api/features)
 │   │   ├── health/                 # Sonde de disponibilité (/api/health)
 │   │   ├── projects/               # Projets d'équipes et clés Jira (/api/projects)
-│   │   ├── tasks/                  # CRUD privé des tâches personnelles EFREI (/api/tasks)
+│   │   ├── tasks/                  # CRUD privé des tâches personnelles (/api/tasks)
 │   │   ├── teams/                  # Équipes, appartenances et rôles (/api/teams)
 │   │   ├── tickets/                # Tickets collaboratifs, Kanban et audit (/api/tickets)
 │   │   └── users/                  # Profil personnel, mot de passe et annuaire (/api/users)
@@ -208,7 +208,7 @@ Un utilisateur peut appartenir à plusieurs équipes avec un rôle spécifique p
 
 L'intégralité des schémas de requêtes/réponses est testable interactivement sur **`GET /api/docs`**.
 
-### Contrat obligatoire EFREI API v1
+### Santé, Authentification et Tâches personnelles
 
 | Méthode | Route | Accès | Statuts principaux |
 |---|---|---|---|
@@ -263,7 +263,7 @@ Cette section résume les conventions exactes garanties pour l'application React
 
 ---
 
-## 10. Notions TP 9 EFREI : Vite, Babel, Webpack et CI/CD
+## 10. Outils de build (Vite, Babel, Webpack) et pipeline CI/CD
 
 ### 10.1 Rôle de Vite, Babel et Webpack
 
@@ -296,7 +296,7 @@ Dans un pipeline **CI/CD** (GitHub Actions, GitLab CI), les vérifications autom
 5. Déploiement continu (CD) uniquement si les étapes 1 à 4 ont réussi (code 0)
 ```
 
-Ce positionnement garantit qu'aucune régression sur le contrat API EFREI, sur l'isolation des données utilisateurs ou sur les permissions collaboratives ne peut atteindre l'environnement partagé avec le Frontend ou la production.
+Ce positionnement garantit qu'aucune régression sur les contrats d'API, sur l'isolation des données utilisateurs ou sur les permissions collaboratives ne peut atteindre l'environnement partagé avec le Frontend ou la production.
 
 ---
 

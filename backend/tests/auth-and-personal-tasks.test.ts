@@ -8,7 +8,7 @@ import {
   teardownTestDatabase,
 } from './helpers/test-db';
 
-describe('EFREI API v1 Mandatory Contract (Health, Auth & Personal Tasks)', () => {
+describe('Health, Authentication & Personal Tasks Isolation', () => {
   beforeAll(async () => {
     await setupTestDatabase();
   });

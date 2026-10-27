@@ -109,8 +109,8 @@ export const openApiSpec: Record<string, unknown> = {
     description: [
       'API REST complète de **TaskFlow** (Node.js, Express, TypeScript, MongoDB/Mongoose, JWT).',
       '',
-      'Elle couvre deux périmètres complémentaires :',
-      '1. **Contrat pédagogique EFREI API v1** (`/api/health`, `/api/auth/*`, `/api/tasks*`) avec isolation stricte des tâches personnelles par utilisateur.',
+      'Elle couvre deux espaces complémentaires :',
+      '1. **Espace personnel & Authentification** (`/api/health`, `/api/auth/*`, `/api/tasks*`) avec isolation stricte des tâches personnelles par utilisateur.',
       '2. **Plateforme collaborative type Jira** (`/api/users*`, `/api/teams*`, `/api/projects*`, `/api/features*`, `/api/tickets*`, `/api/comments*`, `/api/dashboard`) avec gestion des rôles (`admin`, `project_manager`, `developer`, `tester`), tableau Kanban 4 colonnes, historique d\'audit et statistiques.',
       '',
       '**Authentification** : cliquer sur **Authorize** et coller uniquement le jeton JWT obtenu via `POST /api/auth/login` ou `POST /api/auth/register`.',
@@ -129,7 +129,7 @@ export const openApiSpec: Record<string, unknown> = {
   tags: [
     { name: 'Health', description: 'État de santé du service' },
     { name: 'Auth', description: 'Inscription et connexion par JWT' },
-    { name: 'Tasks (EFREI v1)', description: 'CRUD privé des tâches personnelles (contrat EFREI)' },
+    { name: 'Tasks', description: 'CRUD privé des tâches personnelles' },
     { name: 'Users', description: 'Profil personnel, mot de passe et annuaire pour admins' },
     { name: 'Teams', description: 'Équipes collaboratives, membres, rôles et activité' },
     { name: 'Projects', description: 'Projets d\'équipe, clés Jira et vues associées' },
@@ -400,7 +400,7 @@ export const openApiSpec: Record<string, unknown> = {
     '/api/health': {
       get: {
         tags: ['Health'],
-        summary: 'Vérifier la disponibilité du serveur (contrat EFREI)',
+        summary: 'Vérifier la disponibilité du serveur',
         responses: {
           '200': {
             description: 'Serveur opérationnel',
@@ -480,7 +480,7 @@ export const openApiSpec: Record<string, unknown> = {
     },
     '/api/tasks': {
       get: {
-        tags: ['Tasks (EFREI v1)'],
+        tags: ['Tasks'],
         summary: 'Lister les tâches personnelles de l\'utilisateur connecté',
         security: [{ BearerAuth: [] }],
         parameters: [
@@ -508,7 +508,7 @@ export const openApiSpec: Record<string, unknown> = {
         },
       },
       post: {
-        tags: ['Tasks (EFREI v1)'],
+        tags: ['Tasks'],
         summary: 'Créer une tâche personnelle',
         security: [{ BearerAuth: [] }],
         requestBody: {
@@ -540,7 +540,7 @@ export const openApiSpec: Record<string, unknown> = {
     },
     '/api/tasks/{id}': {
       get: {
-        tags: ['Tasks (EFREI v1)'],
+        tags: ['Tasks'],
         summary: 'Consulter une tâche personnelle par identifiant',
         security: [{ BearerAuth: [] }],
         parameters: [idPathParam()],
@@ -555,7 +555,7 @@ export const openApiSpec: Record<string, unknown> = {
         },
       },
       patch: {
-        tags: ['Tasks (EFREI v1)'],
+        tags: ['Tasks'],
         summary: 'Modifier partiellement une tâche personnelle',
         security: [{ BearerAuth: [] }],
         parameters: [idPathParam()],
@@ -586,7 +586,7 @@ export const openApiSpec: Record<string, unknown> = {
         },
       },
       delete: {
-        tags: ['Tasks (EFREI v1)'],
+        tags: ['Tasks'],
         summary: 'Supprimer une tâche personnelle',
         security: [{ BearerAuth: [] }],
         parameters: [idPathParam()],
