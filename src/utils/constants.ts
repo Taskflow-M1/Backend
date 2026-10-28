@@ -62,6 +62,18 @@ export const MESSAGES = {
       'Ton pass VIP (jeton JWT) est invalide ou a expiré ✨ Reconnecte-toi.',
     TOO_MANY_LOGIN_ATTEMPTS:
       'Doucement sur les essais de connexion 🌸 Patiente quelques minutes avant de réessayer.',
+    VERIFICATION_CODE_INVALID:
+      'Ce code est incorrect ou a expiré 💌 Demande un nouveau code pour continuer.',
+    VERIFICATION_CODE_TOO_MANY_ATTEMPTS:
+      "Ce code a fait l'objet de trop d'essais 🌸 Demande un nouveau code pour continuer.",
+    VERIFICATION_CODE_COOLDOWN:
+      'Ton papillon est déjà en route 💌 Patiente une minute avant de demander un nouveau code.',
+    VERIFICATION_CODE_SENT:
+      'Ton code de vérification vient de prendre son envol 💌 Consulte ta boîte e-mail.',
+    VERIFICATION_EMAIL_FAILED:
+      "Le papillon n'a pas réussi à livrer ton e-mail 🌸 Réessaie dans un instant.",
+    TOO_MANY_VERIFICATION_REQUESTS:
+      "Trop de demandes d'un seul coup 🌸 Patiente une minute avant de réessayer.",
   },
   TASKS: {
     NOT_FOUND:

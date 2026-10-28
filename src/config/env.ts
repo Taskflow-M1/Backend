@@ -77,6 +77,20 @@ function parseJwtSecret(
   return secret;
 }
 
+function parsePositiveInteger(
+  rawValue: string | undefined,
+  fallback: number,
+  name: string,
+): number {
+  const value = Number(rawValue ?? fallback);
+
+  if (!Number.isInteger(value) || value < 1) {
+    throw new Error(`${name} must be a positive integer`);
+  }
+
+  return value;
+}
+
 const nodeEnv = process.env.NODE_ENV ?? 'development';
 
 export const env = {
@@ -86,4 +100,13 @@ export const env = {
   mongodbUri: parseMongoUri(process.env.MONGODB_URI, nodeEnv),
   jwtSecret: parseJwtSecret(process.env.JWT_SECRET, nodeEnv),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN?.trim() || '24h',
+  resendApiKey: process.env.RESEND_API_KEY?.trim() || '',
+  resendFromEmail:
+    process.env.RESEND_FROM_EMAIL?.trim() ||
+    'TaskFlow <onboarding@resend.dev>',
+  emailVerificationTtlMinutes: parsePositiveInteger(
+    process.env.EMAIL_VERIFICATION_TTL_MINUTES,
+    10,
+    'EMAIL_VERIFICATION_TTL_MINUTES',
+  ),
 };

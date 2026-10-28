@@ -478,6 +478,87 @@ export const openApiSpec: Record<string, unknown> = {
         },
       },
     },
+    '/api/auth/send-verification-code': {
+      post: {
+        tags: ['Auth'],
+        summary: "Envoyer un code de vérification d'adresse e-mail",
+        description:
+          'Génère un code à 4 chiffres conservé uniquement en mémoire sous forme hachée pendant 10 minutes. Un délai de 60 secondes est imposé entre deux envois.',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['email'],
+                additionalProperties: false,
+                properties: {
+                  email: { type: 'string', format: 'email', example: 'sarah@taskflow.local' },
+                  firstName: { type: 'string', maxLength: 60, example: 'Sarah' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '200': {
+            description: 'Code envoyé',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['message', 'expiresInSeconds', 'cooldownSeconds'],
+                  properties: {
+                    message: { type: 'string' },
+                    expiresInSeconds: { type: 'integer', example: 600 },
+                    cooldownSeconds: { type: 'integer', example: 60 },
+                  },
+                },
+              },
+            },
+          },
+          '400': { $ref: '#/components/responses/BadRequest400' },
+          '409': { $ref: '#/components/responses/Conflict409' },
+          '429': { $ref: '#/components/responses/TooManyRequests429' },
+        },
+      },
+    },
+    '/api/auth/verify-email-code': {
+      post: {
+        tags: ['Auth'],
+        summary: 'Valider le code e-mail et créer le compte',
+        description:
+          "Consomme immédiatement le code éphémère, crée l'utilisateur et retourne le même objet `{ user, token }` que l'inscription standard.",
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['email', 'code', 'password'],
+                additionalProperties: false,
+                properties: {
+                  email: { type: 'string', format: 'email', example: 'sarah@taskflow.local' },
+                  code: { type: 'string', pattern: '^\\d{4}$', example: '0427' },
+                  password: { type: 'string', minLength: 8, maxLength: 128, example: 'MotDePasse123!' },
+                  firstName: { type: 'string', maxLength: 60, example: 'Sarah' },
+                  lastName: { type: 'string', maxLength: 60, example: 'Martin' },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          '201': {
+            description: 'Adresse vérifiée et compte créé',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } } },
+          },
+          '400': { $ref: '#/components/responses/BadRequest400' },
+          '401': { $ref: '#/components/responses/Unauthorized401' },
+          '409': { $ref: '#/components/responses/Conflict409' },
+        },
+      },
+    },
     '/api/tasks': {
       get: {
         tags: ['Tasks'],
@@ -1549,4 +1630,3 @@ export const openApiSpec: Record<string, unknown> = {
     },
   },
 };
-
