@@ -19,12 +19,14 @@ function parsePort(rawPort: string | undefined): number {
 
 // Transforme la configuration CORS en liste d’origines autorisées.
 function parseCorsOrigins(rawOrigins: string | undefined): string[] {
-  const value = rawOrigins ?? 'http://localhost:5173';
-
-  return value
+  const configuredOrigins = (rawOrigins ?? '')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
+
+  // Keep the local Vite development origin available even when Railway (or
+  // another host) sets CORS_ORIGIN to the deployed frontend domain.
+  return [...new Set(['http://localhost:5173', ...configuredOrigins])];
 }
 
 // Choisit et valide l’URI MongoDB selon l’environnement.
