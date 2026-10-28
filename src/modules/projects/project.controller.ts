@@ -1,4 +1,3 @@
-/** Traduit les requêtes HTTP en opérations métier sur les projets. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import {
@@ -31,6 +30,7 @@ import {
   UpdateProjectInput,
 } from './project.validation';
 
+// Traite la requête HTTP pour lister les projets accessibles.
 export async function listProjectsHandler(
   req: Request,
   res: Response<ApiListResponse<ProjectWithRole>>,
@@ -41,6 +41,7 @@ export async function listProjectsHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour créer un projet.
 export async function createProjectHandler(
   req: Request,
   res: Response<ProjectWithRole>,
@@ -50,6 +51,7 @@ export async function createProjectHandler(
   res.status(201).json(project);
 }
 
+// Traite la requête HTTP pour afficher un projet.
 export async function getProjectHandler(
   req: Request,
   res: Response<ProjectWithRole>,
@@ -59,6 +61,7 @@ export async function getProjectHandler(
   res.status(200).json(project);
 }
 
+// Traite la requête HTTP pour modifier un projet.
 export async function updateProjectHandler(
   req: Request,
   res: Response<ProjectWithRole>,
@@ -72,6 +75,7 @@ export async function updateProjectHandler(
   res.status(200).json(updated);
 }
 
+// Traite la requête HTTP pour supprimer un projet.
 export async function deleteProjectHandler(
   req: Request,
   res: Response,
@@ -81,6 +85,7 @@ export async function deleteProjectHandler(
   res.status(204).send();
 }
 
+// Traite la requête HTTP pour lister les fonctionnalités du projet.
 export async function listProjectFeaturesHandler(
   req: Request,
   res: Response<ApiListResponse<PublicFeature>>,
@@ -90,6 +95,7 @@ export async function listProjectFeaturesHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour lister les tickets du projet.
 export async function listProjectTicketsHandler(
   req: Request,
   res: Response<ApiPaginatedListResponse<PublicTicket>>,
@@ -103,6 +109,7 @@ export async function listProjectTicketsHandler(
   res.status(200).json(result);
 }
 
+// Traite la requête HTTP pour charger le tableau Kanban du projet.
 export async function getProjectKanbanHandler(
   req: Request,
   res: Response<KanbanBoardResponse>,

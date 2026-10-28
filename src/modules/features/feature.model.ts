@@ -1,4 +1,3 @@
-/** Modèle MongoDB d'une fonctionnalité regroupant des tickets d'un projet. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export interface IFeature {
@@ -68,6 +67,7 @@ const featureSchema = new Schema<IFeature>(
 
 featureSchema.index({ projectId: 1, createdAt: -1 });
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicFeature(feature: FeatureDocument): PublicFeature {
   return {
     id: feature._id.toString(),

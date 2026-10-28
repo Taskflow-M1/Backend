@@ -1,4 +1,3 @@
-/** Modèle MongoDB d'une équipe qui regroupe des membres et des projets. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export interface ITeam {
@@ -54,6 +53,7 @@ const teamSchema = new Schema<ITeam>(
   },
 );
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicTeam(team: TeamDocument): PublicTeam {
   return {
     id: team._id.toString(),

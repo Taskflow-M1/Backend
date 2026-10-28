@@ -1,4 +1,3 @@
-/** Gère les entrées et sorties HTTP des équipes, membres et rôles. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -24,6 +23,7 @@ import {
   UpdateTeamMemberRoleInput,
 } from './team.validation';
 
+// Traite la requête HTTP pour lister les équipes de l’utilisateur.
 export async function listTeamsHandler(
   req: Request,
   res: Response<ApiListResponse<TeamListItem>>,
@@ -33,6 +33,7 @@ export async function listTeamsHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour créer une équipe.
 export async function createTeamHandler(
   req: Request,
   res: Response<TeamListItem>,
@@ -42,6 +43,7 @@ export async function createTeamHandler(
   res.status(201).json(created);
 }
 
+// Traite la requête HTTP pour afficher une équipe.
 export async function getTeamDetailsHandler(
   req: Request,
   res: Response<TeamDetails>,
@@ -51,6 +53,7 @@ export async function getTeamDetailsHandler(
   res.status(200).json(details);
 }
 
+// Traite la requête HTTP pour modifier une équipe.
 export async function updateTeamHandler(
   req: Request,
   res: Response<PublicTeam>,
@@ -64,6 +67,7 @@ export async function updateTeamHandler(
   res.status(200).json(updated);
 }
 
+// Traite la requête HTTP pour supprimer une équipe.
 export async function deleteTeamHandler(
   req: Request,
   res: Response,
@@ -73,6 +77,7 @@ export async function deleteTeamHandler(
   res.status(204).send();
 }
 
+// Traite la requête HTTP pour lister les membres de l’équipe.
 export async function listTeamMembersHandler(
   req: Request,
   res: Response<ApiListResponse<TeamMemberItem>>,
@@ -82,6 +87,7 @@ export async function listTeamMembersHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour ajouter un membre à l’équipe.
 export async function addTeamMemberHandler(
   req: Request,
   res: Response<TeamMemberItem>,
@@ -95,6 +101,7 @@ export async function addTeamMemberHandler(
   res.status(201).json(member);
 }
 
+// Traite la requête HTTP pour modifier le rôle d’un membre.
 export async function updateTeamMemberRoleHandler(
   req: Request,
   res: Response<TeamMemberItem>,
@@ -109,6 +116,7 @@ export async function updateTeamMemberRoleHandler(
   res.status(200).json(member);
 }
 
+// Traite la requête HTTP pour retirer un membre de l’équipe.
 export async function removeTeamMemberHandler(
   req: Request,
   res: Response,

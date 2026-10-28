@@ -1,4 +1,3 @@
-/** Valide les champs et les filtres utilisés par les fonctionnalités. */
 import { z } from 'zod';
 import { objectIdSchema } from '../../middlewares/validate.middleware';
 import { MESSAGES } from '../../utils/constants';

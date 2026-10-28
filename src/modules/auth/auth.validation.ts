@@ -1,4 +1,3 @@
-/** Schémas Zod des données acceptées par les endpoints d'authentification. */
 import { z } from 'zod';
 import { MESSAGES } from '../../utils/constants';
 

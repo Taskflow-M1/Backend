@@ -1,7 +1,3 @@
-/**
- * Modèle MongoDB d'un utilisateur et fonctions de conversion vers les formes
- * publiques, qui ne contiennent jamais le hash du mot de passe.
- */
 import mongoose, { HydratedDocument, Schema } from 'mongoose';
 
 export interface IUser {
@@ -79,6 +75,7 @@ const userSchema = new Schema<IUser>(
   },
 );
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicUser(user: UserDocument): PublicUser {
   return {
     id: user._id.toString(),
@@ -91,6 +88,7 @@ export function toPublicUser(user: UserDocument): PublicUser {
   };
 }
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toUserSummary(user: UserDocument): UserSummary {
   return {
     id: user._id.toString(),

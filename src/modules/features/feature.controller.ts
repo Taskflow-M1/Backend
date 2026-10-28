@@ -1,4 +1,3 @@
-/** Gère les réponses HTTP liées aux fonctionnalités d'un projet. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -16,6 +15,7 @@ import {
   UpdateFeatureInput,
 } from './feature.validation';
 
+// Traite la requête HTTP pour lister les fonctionnalités.
 export async function listFeaturesHandler(
   req: Request,
   res: Response<ApiListResponse<PublicFeature>>,
@@ -26,6 +26,7 @@ export async function listFeaturesHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour créer une fonctionnalité.
 export async function createFeatureHandler(
   req: Request,
   res: Response<PublicFeature>,
@@ -35,6 +36,7 @@ export async function createFeatureHandler(
   res.status(201).json(feature);
 }
 
+// Traite la requête HTTP pour afficher une fonctionnalité.
 export async function getFeatureHandler(
   req: Request,
   res: Response<PublicFeature>,
@@ -44,6 +46,7 @@ export async function getFeatureHandler(
   res.status(200).json(feature);
 }
 
+// Traite la requête HTTP pour modifier une fonctionnalité.
 export async function updateFeatureHandler(
   req: Request,
   res: Response<PublicFeature>,
@@ -57,6 +60,7 @@ export async function updateFeatureHandler(
   res.status(200).json(updated);
 }
 
+// Traite la requête HTTP pour supprimer une fonctionnalité.
 export async function deleteFeatureHandler(
   req: Request,
   res: Response,

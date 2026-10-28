@@ -1,4 +1,3 @@
-/** Valide la création, la modification et les filtres des tâches personnelles. */
 import { z } from 'zod';
 import { MESSAGES } from '../../utils/constants';
 import { isRealCalendarDate } from '../../utils/date';

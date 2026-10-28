@@ -1,7 +1,3 @@
-/**
- * Construit le message de vérification et délègue son envoi à Resend.
- * Le transport peut être remplacé pendant les tests sans envoyer de vrai mail.
- */
 import fs from 'fs';
 import path from 'path';
 import { Resend } from 'resend';
@@ -23,10 +19,12 @@ export interface VerificationEmailPayload {
 }
 
 export interface VerificationEmailTransport {
+  // Définit le contrat commun à tous les services d'envoi d'e-mails.
   send(payload: VerificationEmailPayload): Promise<void>;
 }
 
 class ResendEmailTransport implements VerificationEmailTransport {
+  // Envoie réellement le message avec l'API Resend.
   async send(payload: VerificationEmailPayload): Promise<void> {
     if (!env.resendApiKey) {
       throw new Error('RESEND_API_KEY is not configured');
@@ -42,6 +40,7 @@ class ResendEmailTransport implements VerificationEmailTransport {
 }
 
 const noOpTestTransport: VerificationEmailTransport = {
+  // Simule un envoi réussi sans contacter Resend pendant les tests.
   async send(): Promise<void> {
     return Promise.resolve();
   },
@@ -51,6 +50,7 @@ let transport: VerificationEmailTransport =
   env.nodeEnv === 'test' ? noOpTestTransport : new ResendEmailTransport();
 let logoContent: Buffer | undefined;
 
+// Charge le logo une seule fois puis le conserve en mémoire.
 function getLogoContent(): Buffer {
   if (!logoContent) {
     const logoPath = path.resolve(
@@ -63,6 +63,7 @@ function getLogoContent(): Buffer {
   return logoContent;
 }
 
+// Envoie le code avec le modèle graphique TaskFlow.
 export async function sendVerificationEmail(
   email: string,
   code: string,
@@ -86,6 +87,7 @@ export async function sendVerificationEmail(
   });
 }
 
+// Remplace le service d’envoi réel par un transport de test.
 export function setVerificationEmailTransportForTests(
   testTransport?: VerificationEmailTransport,
 ): void {

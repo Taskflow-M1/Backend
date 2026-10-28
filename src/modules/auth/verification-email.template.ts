@@ -1,6 +1,6 @@
-/** Génère les versions HTML et texte du mail de vérification TaskFlow. */
 import { env } from '../../config/env';
 
+// Neutralise les caractères HTML provenant du prénom.
 function escapeHtml(value: string): string {
   return value
     .replaceAll('&', '&amp;')
@@ -15,6 +15,7 @@ export interface VerificationEmailContent {
   text: string;
 }
 
+// Construit les versions HTML et texte du mail de vérification.
 export function buildVerificationEmail(
   code: string,
   firstName?: string,

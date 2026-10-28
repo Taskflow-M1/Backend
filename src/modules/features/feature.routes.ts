@@ -1,4 +1,3 @@
-/** Déclare le CRUD privé des fonctionnalités de projet. */
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.middleware';
 import {

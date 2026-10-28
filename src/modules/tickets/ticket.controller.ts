@@ -1,4 +1,3 @@
-/** Adapte les endpoints HTTP aux opérations métier sur les tickets. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import {
@@ -28,6 +27,7 @@ import {
   UpdateTicketStatusInput,
 } from './ticket.validation';
 
+// Traite la requête HTTP pour lister les tickets accessibles.
 export async function listTicketsHandler(
   req: Request,
   res: Response<ApiPaginatedListResponse<PublicTicket>>,
@@ -38,6 +38,7 @@ export async function listTicketsHandler(
   res.status(200).json(result);
 }
 
+// Traite la requête HTTP pour lister les tickets assignés à l’utilisateur.
 export async function listMyAssignedTicketsHandler(
   req: Request,
   res: Response<ApiPaginatedListResponse<PublicTicket>>,
@@ -48,6 +49,7 @@ export async function listMyAssignedTicketsHandler(
   res.status(200).json(result);
 }
 
+// Traite la requête HTTP pour créer un ticket.
 export async function createTicketHandler(
   req: Request,
   res: Response<PublicTicket>,
@@ -57,6 +59,7 @@ export async function createTicketHandler(
   res.status(201).json(ticket);
 }
 
+// Traite la requête HTTP pour afficher un ticket.
 export async function getTicketHandler(
   req: Request,
   res: Response<PublicTicket>,
@@ -66,6 +69,7 @@ export async function getTicketHandler(
   res.status(200).json(ticket);
 }
 
+// Traite la requête HTTP pour lister l’historique du ticket.
 export async function listTicketHistoryHandler(
   req: Request,
   res: Response<ApiListResponse<PublicTicketHistory>>,
@@ -76,6 +80,7 @@ export async function listTicketHistoryHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour modifier un ticket.
 export async function updateTicketHandler(
   req: Request,
   res: Response<PublicTicket>,
@@ -89,6 +94,7 @@ export async function updateTicketHandler(
   res.status(200).json(updated);
 }
 
+// Traite la requête HTTP pour changer le statut du ticket.
 export async function updateTicketStatusHandler(
   req: Request,
   res: Response<PublicTicket>,
@@ -102,6 +108,7 @@ export async function updateTicketStatusHandler(
   res.status(200).json(updated);
 }
 
+// Traite la requête HTTP pour assigner le ticket.
 export async function assignTicketHandler(
   req: Request,
   res: Response<PublicTicket>,
@@ -115,6 +122,7 @@ export async function assignTicketHandler(
   res.status(200).json(updated);
 }
 
+// Traite la requête HTTP pour supprimer le ticket.
 export async function deleteTicketHandler(
   req: Request,
   res: Response,

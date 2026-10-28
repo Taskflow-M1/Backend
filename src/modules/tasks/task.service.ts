@@ -1,17 +1,15 @@
-/**
- * Applique le CRUD des tâches en filtrant toujours par propriétaire.
- * Ce filtrage empêche un utilisateur d'accéder aux tâches d'un autre compte.
- */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { ITask, PublicTask, TaskModel, toPublicTask } from './task.model';
 import { CreateTaskInput, UpdateTaskInput } from './task.validation';
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listTasksByOwner(ownerId: string): Promise<PublicTask[]> {
   const tasks = await TaskModel.find({ ownerId }).sort({ createdAt: -1 });
   return tasks.map(toPublicTask);
 }
 
+// Crée la ressource après validation des droits et des données.
 export async function createTaskForOwner(
   ownerId: string,
   input: CreateTaskInput,
@@ -27,6 +25,7 @@ export async function createTaskForOwner(
   return toPublicTask(createdTask);
 }
 
+// Récupère la ressource demandée après contrôle de son accès.
 export async function getTaskByIdForOwner(
   ownerId: string,
   taskId: string,
@@ -40,6 +39,7 @@ export async function getTaskByIdForOwner(
   return toPublicTask(task);
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateTaskForOwner(
   ownerId: string,
   taskId: string,
@@ -75,6 +75,7 @@ export async function updateTaskForOwner(
   return toPublicTask(updatedTask);
 }
 
+// Supprime la ressource après vérification des autorisations.
 export async function deleteTaskForOwner(
   ownerId: string,
   taskId: string,

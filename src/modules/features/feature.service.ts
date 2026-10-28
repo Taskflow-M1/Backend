@@ -1,7 +1,3 @@
-/**
- * Gère les fonctionnalités et contrôle que l'utilisateur appartient au projet.
- * Les écritures sensibles restent réservées aux rôles de pilotage.
- */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { ProjectDocument, ProjectModel } from '../projects/project.model';
@@ -29,6 +25,7 @@ interface FeatureTicketStats {
   done: number;
 }
 
+// Calcule la progression des fonctionnalités à partir de leurs tickets.
 async function attachFeaturesProgress(
   features: FeatureDocument[],
 ): Promise<PublicFeature[]> {
@@ -79,6 +76,7 @@ async function attachFeaturesProgress(
   });
 }
 
+// Vérifie l’accès à une fonctionnalité et retourne son contexte.
 export async function requireFeatureAccess(
   featureId: string,
   userId: string,
@@ -105,6 +103,7 @@ export async function requireFeatureAccess(
   return { feature, project, membership };
 }
 
+// Crée la ressource après validation des droits et des données.
 export async function createFeature(
   creatorId: string,
   input: CreateFeatureInput,
@@ -125,6 +124,7 @@ export async function createFeature(
   return toPublicFeature(createdFeature);
 }
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listAccessibleFeatures(
   userId: string,
   projectId?: string,
@@ -161,6 +161,7 @@ export async function listAccessibleFeatures(
   return attachFeaturesProgress(features);
 }
 
+// Récupère la ressource demandée après contrôle de son accès.
 export async function getFeatureById(
   featureId: string,
   userId: string,
@@ -170,6 +171,7 @@ export async function getFeatureById(
   return enriched;
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateFeature(
   featureId: string,
   userId: string,
@@ -199,6 +201,7 @@ export async function updateFeature(
   return enriched;
 }
 
+// Supprime la ressource après vérification des autorisations.
 export async function deleteFeature(
   featureId: string,
   userId: string,

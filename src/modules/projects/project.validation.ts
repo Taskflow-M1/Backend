@@ -1,4 +1,3 @@
-/** Valide les projets, leur clé courte et les paramètres de pagination. */
 import { z } from 'zod';
 import { objectIdSchema } from '../../middlewares/validate.middleware';
 import { MESSAGES } from '../../utils/constants';

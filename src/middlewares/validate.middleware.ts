@@ -1,7 +1,3 @@
-/**
- * Valide les paramètres, la requête et le corps HTTP avec Zod avant
- * d'appeler le contrôleur. Les données validées remplacent les données brutes.
- */
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { z, ZodError, ZodType } from 'zod';
 import { AppError } from '../utils/app-error';
@@ -32,6 +28,7 @@ const DEFAULT_ZOD_PREFIXES = [
   'Unrecognized key',
 ];
 
+// Transforme les erreurs Zod en une erreur métier lisible.
 export function formatZodError(error: ZodError): AppError {
   const firstIssue = error.issues[0];
 
@@ -61,6 +58,7 @@ export function formatZodError(error: ZodError): AppError {
   return AppError.badRequest(firstIssue.message);
 }
 
+// Crée le middleware qui valide body, params et query avec Zod.
 export function validate(schemas: ValidationSchemas): RequestHandler {
   return (req: Request, _res: Response, next: NextFunction): void => {
     if (schemas.params) {

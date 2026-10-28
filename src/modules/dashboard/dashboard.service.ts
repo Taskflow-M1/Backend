@@ -1,7 +1,3 @@
-/**
- * Agrège les équipes, projets et tickets accessibles pour produire les KPI,
- * graphiques et listes récentes affichés sur le tableau de bord.
- */
 import { Types } from 'mongoose';
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
@@ -107,6 +103,7 @@ export interface DashboardResponse {
   recentActivity: DashboardActivityItem[];
 }
 
+// Calcule les statistiques des tâches personnelles.
 async function computePersonalTasksStats(
   userId: string,
   today: string,
@@ -159,6 +156,7 @@ async function computePersonalTasksStats(
   };
 }
 
+// Ajoute les utilisateurs et libellés aux événements récents.
 async function enrichActivityItems(
   historyDocs: TicketHistoryDocument[],
   projectsById: ReadonlyMap<string, ProjectDocument>,
@@ -197,6 +195,7 @@ async function enrichActivityItems(
   });
 }
 
+// Retient le rôle le plus élevé parmi les équipes accessibles.
 function resolveHighestRole(roles: TeamRole[]): TeamRole | 'individual' {
   if (roles.length === 0) {
     return 'individual';
@@ -211,6 +210,7 @@ function resolveHighestRole(roles: TeamRole[]): TeamRole | 'individual' {
   return best;
 }
 
+// Agrège les indicateurs visibles dans le tableau de bord.
 export async function getDashboardData(
   userId: string,
   query: DashboardQuery = {},
@@ -526,6 +526,7 @@ export async function getDashboardData(
   };
 }
 
+// Retourne les derniers événements d’une équipe autorisée.
 export async function listTeamRecentActivity(
   teamId: string,
   userId: string,

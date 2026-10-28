@@ -1,9 +1,6 @@
-/**
- * Décrit le contrat OpenAPI complet de TaskFlow utilisé par Swagger UI.
- * Les schémas documentent les entrées, les réponses et les erreurs publiques.
- */
 import { env } from './env';
 
+// Construit la description OpenAPI d’un identifiant placé dans l’URL.
 const idPathParam = (name = 'id', description = 'Identifiant MongoDB (24 caractères hexadécimaux)') => ({
   name,
   in: 'path',

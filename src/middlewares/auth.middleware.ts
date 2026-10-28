@@ -1,7 +1,3 @@
-/**
- * Protège les routes privées en validant le Bearer token et en chargeant
- * l'utilisateur authentifié dans la requête Express.
- */
 import { NextFunction, Request, Response } from 'express';
 import { UserModel } from '../modules/users/user.model';
 import { AuthenticatedUser } from '../types/auth.types';
@@ -11,6 +7,7 @@ import { verifyAccessToken } from '../utils/jwt';
 
 const OBJECT_ID_REGEX = /^[0-9a-fA-F]{24}$/;
 
+// Vérifie le Bearer token puis charge l’utilisateur authentifié.
 export async function requireAuth(
   req: Request,
   _res: Response,
@@ -56,6 +53,7 @@ export async function requireAuth(
   }
 }
 
+// Retourne l’utilisateur authentifié déjà attaché à la requête.
 export function getAuthenticatedUser(req: Request): AuthenticatedUser {
   if (!req.user) {
     throw AppError.unauthorized(MESSAGES.AUTH.TOKEN_MISSING);

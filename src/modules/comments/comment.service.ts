@@ -1,7 +1,3 @@
-/**
- * Gère les commentaires en vérifiant l'accès au projet et les droits
- * de l'auteur ou des responsables avant toute modification.
- */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import {
@@ -19,6 +15,7 @@ import {
 } from './comment.model';
 import { CreateCommentInput, UpdateCommentInput } from './comment.validation';
 
+// Ajoute à chaque commentaire les informations publiques de son auteur.
 async function formatCommentsWithUsers(
   comments: CommentDocument[],
 ): Promise<PublicComment[]> {
@@ -38,6 +35,7 @@ async function formatCommentsWithUsers(
   return comments.map((comment) => toPublicComment(comment, usersById));
 }
 
+// Retourne les commentaires d’un ticket accessible.
 export async function listTicketComments(
   ticketId: string,
   userId: string,
@@ -48,6 +46,7 @@ export async function listTicketComments(
   return formatCommentsWithUsers(comments);
 }
 
+// Ajoute un commentaire après contrôle de l’accès au ticket.
 export async function createTicketComment(
   ticketId: string,
   userId: string,
@@ -79,6 +78,7 @@ export async function createTicketComment(
   return formatted;
 }
 
+// Modifie un commentaire si l’utilisateur en a le droit.
 export async function updateComment(
   commentId: string,
   userId: string,
@@ -105,6 +105,7 @@ export async function updateComment(
   return formatted;
 }
 
+// Supprime un commentaire si l’utilisateur en a le droit.
 export async function deleteComment(
   commentId: string,
   userId: string,

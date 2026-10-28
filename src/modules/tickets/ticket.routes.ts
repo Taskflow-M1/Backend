@@ -1,7 +1,3 @@
-/**
- * Déclare les routes des tickets, de l'assignation, du Kanban, des commentaires
- * et de l'historique. Toutes nécessitent une authentification.
- */
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.middleware';
 import {

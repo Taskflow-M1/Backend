@@ -1,4 +1,3 @@
-/** Gère les entrées et sorties HTTP du CRUD des tâches personnelles. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -12,6 +11,7 @@ import {
 } from './task.service';
 import { CreateTaskInput, UpdateTaskInput } from './task.validation';
 
+// Traite la requête HTTP pour lister les tâches personnelles.
 export async function listTasksHandler(
   req: Request,
   res: Response<ApiListResponse<PublicTask>>,
@@ -21,6 +21,7 @@ export async function listTasksHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour créer une tâche personnelle.
 export async function createTaskHandler(
   req: Request,
   res: Response<PublicTask>,
@@ -30,6 +31,7 @@ export async function createTaskHandler(
   res.status(201).json(task);
 }
 
+// Traite la requête HTTP pour afficher une tâche personnelle.
 export async function getTaskHandler(
   req: Request,
   res: Response<PublicTask>,
@@ -39,6 +41,7 @@ export async function getTaskHandler(
   res.status(200).json(task);
 }
 
+// Traite la requête HTTP pour modifier une tâche personnelle.
 export async function updateTaskHandler(
   req: Request,
   res: Response<PublicTask>,
@@ -52,6 +55,7 @@ export async function updateTaskHandler(
   res.status(200).json(task);
 }
 
+// Traite la requête HTTP pour supprimer une tâche personnelle.
 export async function deleteTaskHandler(
   req: Request,
   res: Response,

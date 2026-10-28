@@ -1,4 +1,3 @@
-/** Modèle MongoDB d'un projet appartenant à une équipe TaskFlow. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export interface IProject {
@@ -83,6 +82,7 @@ const projectSchema = new Schema<IProject>(
 // Enforces unique project key within the same team
 projectSchema.index({ teamId: 1, key: 1 }, { unique: true });
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicProject(project: ProjectDocument): PublicProject {
   return {
     id: project._id.toString(),

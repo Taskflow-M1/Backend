@@ -1,7 +1,3 @@
-/**
- * Charge et valide les variables d'environnement une seule fois.
- * Le reste de l'application utilise ensuite cet objet typé et normalisé.
- */
 import path from 'path';
 import dotenv from 'dotenv';
 
@@ -10,6 +6,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env'), quiet: true });
 const PLACEHOLDER_JWT_SECRET =
   'replace-with-a-random-secret-at-least-32-characters';
 
+// Valide le port HTTP et applique sa valeur par défaut.
 function parsePort(rawPort: string | undefined): number {
   const port = Number(rawPort ?? 3000);
 
@@ -20,6 +17,7 @@ function parsePort(rawPort: string | undefined): number {
   return port;
 }
 
+// Transforme la configuration CORS en liste d’origines autorisées.
 function parseCorsOrigins(rawOrigins: string | undefined): string[] {
   const value = rawOrigins ?? 'http://localhost:5173';
 
@@ -29,6 +27,7 @@ function parseCorsOrigins(rawOrigins: string | undefined): string[] {
     .filter(Boolean);
 }
 
+// Choisit et valide l’URI MongoDB selon l’environnement.
 function parseMongoUri(rawUri: string | undefined, nodeEnv: string): string {
   const uri =
     nodeEnv === 'test'
@@ -52,6 +51,7 @@ function parseMongoUri(rawUri: string | undefined, nodeEnv: string): string {
   return uri;
 }
 
+// Valide la clé utilisée pour signer les JWT.
 function parseJwtSecret(
   rawSecret: string | undefined,
   nodeEnv: string,
@@ -81,6 +81,7 @@ function parseJwtSecret(
   return secret;
 }
 
+// Lit une variable entière positive avec une valeur par défaut.
 function parsePositiveInteger(
   rawValue: string | undefined,
   fallback: number,

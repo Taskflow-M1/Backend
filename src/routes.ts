@@ -1,7 +1,3 @@
-/**
- * Assemble les routeurs fonctionnels sous le préfixe commun `/api`.
- * Chaque module reste ainsi responsable de ses propres endpoints.
- */
 import { Router } from 'express';
 import authRouter from './modules/auth/auth.routes';
 import commentRouter from './modules/comments/comment.routes';

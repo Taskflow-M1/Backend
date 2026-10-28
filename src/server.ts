@@ -1,7 +1,3 @@
-/**
- * Point d'entrée du serveur. Il connecte MongoDB, démarre l'écoute HTTP
- * et ferme proprement les ressources lors de l'arrêt du processus.
- */
 import http from 'http';
 import app from './app';
 import { connectDatabase, disconnectDatabase } from './config/database';
@@ -10,6 +6,7 @@ import { env } from './config/env';
 let server: http.Server | null = null;
 let isShuttingDown = false;
 
+// Ferme proprement le serveur HTTP et la connexion MongoDB.
 async function gracefulShutdown(signal: string): Promise<void> {
   if (isShuttingDown) {
     return;
@@ -40,6 +37,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
   }
 }
 
+// Connecte la base de données puis démarre le serveur HTTP.
 async function startServer(): Promise<void> {
   try {
     await connectDatabase();

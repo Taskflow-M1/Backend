@@ -1,4 +1,3 @@
-/** Création et vérification des jetons JWT utilisés par l'authentification. */
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { env } from '../config/env';
 
@@ -7,6 +6,7 @@ export interface AccessTokenPayload {
   email: string;
 }
 
+// Signe un JWT pour l’utilisateur authentifié.
 export function signAccessToken(payload: AccessTokenPayload): string {
   const options: SignOptions = {
     algorithm: 'HS256',
@@ -16,6 +16,7 @@ export function signAccessToken(payload: AccessTokenPayload): string {
   return jwt.sign(payload, env.jwtSecret, options);
 }
 
+// Vérifie le JWT et retourne son contenu utile.
 export function verifyAccessToken(token: string): AccessTokenPayload {
   const decoded = jwt.verify(token, env.jwtSecret, {
     algorithms: ['HS256'],

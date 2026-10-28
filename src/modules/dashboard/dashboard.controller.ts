@@ -1,4 +1,3 @@
-/** Retourne les indicateurs du tableau de bord et l'activité récente. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -10,6 +9,7 @@ import {
 } from './dashboard.service';
 import { DashboardQuery, TeamActivityQuery } from './dashboard.validation';
 
+// Traite la requête HTTP pour charger le tableau de bord.
 export async function getDashboardHandler(
   req: Request,
   res: Response<DashboardResponse>,
@@ -20,6 +20,7 @@ export async function getDashboardHandler(
   res.status(200).json(dashboard);
 }
 
+// Traite la requête HTTP pour lister l’activité récente de l’équipe.
 export async function listTeamActivityHandler(
   req: Request,
   res: Response<ApiListResponse<DashboardActivityItem>>,

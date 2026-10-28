@@ -1,7 +1,3 @@
-/**
- * Fournit un limiteur simple en mémoire pour ralentir les tentatives
- * répétées sur les endpoints sensibles comme la connexion et les codes e-mail.
- */
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { env } from '../config/env';
 import { AppError } from '../utils/app-error';
@@ -19,6 +15,7 @@ interface RateLimitEntry {
   resetAt: number;
 }
 
+// Crée un middleware qui limite les appels répétés par client.
 export function createRateLimiter(options: RateLimitOptions): RequestHandler {
   const store = new Map<string, RateLimitEntry>();
   const message = options.message ?? MESSAGES.AUTH.TOO_MANY_LOGIN_ATTEMPTS;

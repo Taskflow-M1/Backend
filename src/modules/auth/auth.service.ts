@@ -1,7 +1,3 @@
-/**
- * Porte le parcours d'authentification : envoi du code, création du compte
- * après vérification, contrôle du mot de passe et émission du JWT.
- */
 import { AppError } from '../../utils/app-error';
 import { ERROR_CODES, MESSAGES } from '../../utils/constants';
 import { signAccessToken } from '../../utils/jwt';
@@ -36,6 +32,7 @@ export interface VerificationCodeSentResponse {
   cooldownSeconds: number;
 }
 
+// Reconnaît une erreur MongoDB causée par une valeur déjà utilisée.
 function isMongoDuplicateKeyError(err: unknown): boolean {
   return (
     typeof err === 'object' &&
@@ -45,6 +42,7 @@ function isMongoDuplicateKeyError(err: unknown): boolean {
   );
 }
 
+// Crée le compte, hache son mot de passe et émet son premier JWT.
 export async function registerUser(
   input: RegisterInput,
 ): Promise<AuthResponse> {
@@ -87,6 +85,7 @@ export async function registerUser(
   }
 }
 
+// Vérifie les identifiants puis retourne l’utilisateur et son JWT.
 export async function loginUser(input: LoginInput): Promise<AuthResponse> {
   const user = await UserModel.findOne({ email: input.email }).select(
     '+passwordHash',
@@ -113,6 +112,7 @@ export async function loginUser(input: LoginInput): Promise<AuthResponse> {
   };
 }
 
+// Génère et envoie un code si l’adresse e-mail est disponible.
 export async function requestVerificationCode(
   input: SendVerificationCodeInput,
 ): Promise<VerificationCodeSentResponse> {
@@ -144,6 +144,7 @@ export async function requestVerificationCode(
   };
 }
 
+// Démarre l’inscription en demandant l’envoi du code e-mail.
 export async function requestRegistration(
   input: RegisterInput,
 ): Promise<VerificationCodeSentResponse> {
@@ -154,6 +155,7 @@ export async function requestRegistration(
   });
 }
 
+// Valide le code, crée le compte et retourne son JWT.
 export async function verifyEmailCodeAndRegister(
   input: VerifyEmailCodeInput,
 ): Promise<AuthResponse> {

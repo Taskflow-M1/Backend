@@ -1,7 +1,3 @@
-/**
- * Stockage éphémère des codes de vérification. Seule leur empreinte est gardée
- * en mémoire, avec expiration, délai de renvoi et limite d'essais.
- */
 import {
   createHmac,
   randomInt,
@@ -26,12 +22,14 @@ export const EMAIL_VERIFICATION_TTL_SECONDS =
   env.emailVerificationTtlMinutes * 60;
 export const EMAIL_VERIFICATION_COOLDOWN_SECONDS = COOLDOWN_MS / 1000;
 
+// Calcule une empreinte sécurisée du code liée à l’adresse e-mail.
 function hashCode(email: string, code: string): Buffer {
   return createHmac('sha256', env.jwtSecret)
     .update(`${email}:${code}`)
     .digest();
 }
 
+// Supprime de la mémoire les codes arrivés à expiration.
 function purgeExpiredEntries(now = Date.now()): void {
   for (const [email, entry] of verificationStore.entries()) {
     if (now >= entry.expiresAt) {
@@ -43,6 +41,7 @@ function purgeExpiredEntries(now = Date.now()): void {
 const purgeTimer = setInterval(purgeExpiredEntries, 60_000);
 purgeTimer.unref();
 
+// Crée un code à quatre chiffres avec expiration et délai de renvoi.
 export function createVerificationCode(email: string): string {
   const now = Date.now();
   purgeExpiredEntries(now);
@@ -68,6 +67,7 @@ export function createVerificationCode(email: string): string {
   return code;
 }
 
+// Retire le code si son envoi par e-mail a échoué.
 export function cancelVerificationCode(email: string, code: string): void {
   const entry = verificationStore.get(email);
   if (
@@ -78,6 +78,7 @@ export function cancelVerificationCode(email: string, code: string): void {
   }
 }
 
+// Vérifie le code et le supprime dès qu’il est accepté.
 export function consumeVerificationCode(email: string, code: string): void {
   const entry = verificationStore.get(email);
   const now = Date.now();
@@ -104,6 +105,7 @@ export function consumeVerificationCode(email: string, code: string): void {
   verificationStore.delete(email);
 }
 
+// Réinitialise les codes en mémoire uniquement pendant les tests.
 export function clearVerificationStoreForTests(): void {
   if (env.nodeEnv === 'test') {
     verificationStore.clear();

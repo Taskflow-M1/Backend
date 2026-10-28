@@ -1,4 +1,3 @@
-/** Modèle MongoDB d'un commentaire rattaché à un ticket et à son auteur. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 import { UserSummary } from '../users/user.model';
 
@@ -75,6 +74,7 @@ const commentSchema = new Schema<IComment>(
 
 commentSchema.index({ ticketId: 1, createdAt: 1 });
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicComment(
   comment: CommentDocument,
   usersById?: ReadonlyMap<string, UserSummary>,

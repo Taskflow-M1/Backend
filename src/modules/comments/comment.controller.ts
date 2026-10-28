@@ -1,4 +1,3 @@
-/** Adapte les requêtes HTTP aux opérations de discussion sur les tickets. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -11,6 +10,7 @@ import {
 } from './comment.service';
 import { CreateCommentInput, UpdateCommentInput } from './comment.validation';
 
+// Traite la requête HTTP pour lister les commentaires du ticket.
 export async function listTicketCommentsHandler(
   req: Request,
   res: Response<ApiListResponse<PublicComment>>,
@@ -20,6 +20,7 @@ export async function listTicketCommentsHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour ajouter un commentaire au ticket.
 export async function createTicketCommentHandler(
   req: Request,
   res: Response<PublicComment>,
@@ -33,6 +34,7 @@ export async function createTicketCommentHandler(
   res.status(201).json(created);
 }
 
+// Traite la requête HTTP pour modifier un commentaire.
 export async function updateCommentHandler(
   req: Request,
   res: Response<PublicComment>,
@@ -46,6 +48,7 @@ export async function updateCommentHandler(
   res.status(200).json(updated);
 }
 
+// Traite la requête HTTP pour supprimer un commentaire.
 export async function deleteCommentHandler(
   req: Request,
   res: Response,

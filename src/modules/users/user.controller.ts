@@ -1,4 +1,3 @@
-/** Gère les réponses HTTP du profil, du mot de passe et de l'annuaire. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -16,6 +15,7 @@ import {
   UpdateProfileInput,
 } from './user.validation';
 
+// Traite la requête HTTP pour rechercher des utilisateurs.
 export async function searchUsersHandler(
   req: Request,
   res: Response<ApiListResponse<UserSummary>>,
@@ -26,6 +26,7 @@ export async function searchUsersHandler(
   res.status(200).json({ items });
 }
 
+// Traite la requête HTTP pour afficher le profil connecté.
 export async function getMeHandler(
   req: Request,
   res: Response<PublicUser>,
@@ -35,6 +36,7 @@ export async function getMeHandler(
   res.status(200).json(profile);
 }
 
+// Traite la requête HTTP pour modifier le profil connecté.
 export async function updateMeHandler(
   req: Request,
   res: Response<PublicUser>,
@@ -47,6 +49,7 @@ export async function updateMeHandler(
   res.status(200).json(updatedProfile);
 }
 
+// Traite la requête HTTP pour changer le mot de passe du compte.
 export async function updateMyPasswordHandler(
   req: Request,
   res: Response<{ message: string }>,

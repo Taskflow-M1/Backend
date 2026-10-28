@@ -1,4 +1,3 @@
-/** Valide le profil, l'avatar, la recherche et les changements de mot de passe. */
 import { z } from 'zod';
 import { MESSAGES } from '../../utils/constants';
 
@@ -9,6 +8,7 @@ const MAX_DATA_AVATAR_URL_LENGTH = 150_000;
 const SAFE_DATA_IMAGE_REGEX =
   /^data:image\/(?:png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/]+={0,2}$/;
 
+// Vérifie qu’une URL d’avatar utilise HTTP ou HTTPS.
 function isValidHttpAvatarUrl(value: string): boolean {
   if (value.length > MAX_HTTP_AVATAR_URL_LENGTH) {
     return false;

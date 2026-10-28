@@ -1,4 +1,3 @@
-/** Modèle immuable des événements importants enregistrés sur un ticket. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 import { UserSummary } from '../users/user.model';
 
@@ -107,6 +106,7 @@ const ticketHistorySchema = new Schema<ITicketHistory>(
 ticketHistorySchema.index({ ticketId: 1, createdAt: 1 });
 ticketHistorySchema.index({ projectId: 1, createdAt: -1 });
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicTicketHistory(
   entry: TicketHistoryDocument,
   usersById?: ReadonlyMap<string, UserSummary>,

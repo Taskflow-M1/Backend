@@ -1,7 +1,3 @@
-/**
- * Gère les équipes et leurs membres en appliquant les rôles. Les règles
- * protègent notamment le dernier administrateur contre un retrait accidentel.
- */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { CommentModel } from '../comments/comment.model';
@@ -46,6 +42,7 @@ export interface TeamDetails extends PublicTeam {
   members: TeamMemberItem[];
 }
 
+// Reconnaît une erreur MongoDB causée par une valeur déjà utilisée.
 function isMongoDuplicateKeyError(err: unknown): boolean {
   return (
     typeof err === 'object' &&
@@ -55,6 +52,7 @@ function isMongoDuplicateKeyError(err: unknown): boolean {
   );
 }
 
+// Vérifie l’appartenance à l’équipe et les rôles éventuellement requis.
 export async function requireTeamMembership(
   teamId: string,
   userId: string,
@@ -81,6 +79,7 @@ export async function requireTeamMembership(
   return { team, membership };
 }
 
+// Indique si un utilisateur appartient à une équipe.
 export async function isUserTeamMember(
   teamId: string,
   userId: string,
@@ -89,6 +88,7 @@ export async function isUserTeamMember(
   return Boolean(exists);
 }
 
+// Crée la ressource après validation des droits et des données.
 export async function createTeam(
   creatorId: string,
   input: CreateTeamInput,
@@ -117,6 +117,7 @@ export async function createTeam(
   };
 }
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listMyTeams(userId: string): Promise<TeamListItem[]> {
   const memberships = await TeamMembershipModel.find({ userId }).sort({
     joinedAt: -1,
@@ -153,6 +154,7 @@ export async function listMyTeams(userId: string): Promise<TeamListItem[]> {
   });
 }
 
+// Charge les membres et prépare leur représentation publique.
 async function fetchFormattedTeamMembers(
   teamId: string,
 ): Promise<TeamMemberItem[]> {
@@ -171,6 +173,7 @@ async function fetchFormattedTeamMembers(
     }));
 }
 
+// Récupère la ressource demandée après contrôle de son accès.
 export async function getTeamDetails(
   teamId: string,
   requesterId: string,
@@ -185,6 +188,7 @@ export async function getTeamDetails(
   };
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateTeam(
   teamId: string,
   requesterId: string,
@@ -213,6 +217,7 @@ export async function updateTeam(
   return toPublicTeam(updatedTeam);
 }
 
+// Supprime la ressource après vérification des autorisations.
 export async function deleteTeam(
   teamId: string,
   requesterId: string,
@@ -233,6 +238,7 @@ export async function deleteTeam(
   await TeamModel.findByIdAndDelete(teamId);
 }
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listTeamMembers(
   teamId: string,
   requesterId: string,
@@ -241,6 +247,7 @@ export async function listTeamMembers(
   return fetchFormattedTeamMembers(teamId);
 }
 
+// Ajoute la ressource après validation des autorisations.
 export async function addTeamMember(
   teamId: string,
   requesterId: string,
@@ -285,6 +292,7 @@ export async function addTeamMember(
   }
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateTeamMemberRole(
   teamId: string,
   requesterId: string,
@@ -328,6 +336,7 @@ export async function updateTeamMemberRole(
   };
 }
 
+// Retire la ressource après vérification des autorisations.
 export async function removeTeamMember(
   teamId: string,
   requesterId: string,

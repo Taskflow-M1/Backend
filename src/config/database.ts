@@ -1,7 +1,3 @@
-/**
- * Centralise la connexion MongoDB et masque les informations sensibles
- * des URI avant de les écrire dans les journaux.
- */
 import os from 'node:os';
 import mongoose from 'mongoose';
 import { env } from './env';
@@ -10,6 +6,7 @@ mongoose.set('strictQuery', true);
 
 let listenersRegistered = false;
 
+// Masque les identifiants présents dans une URI MongoDB.
 export function redactMongoUri(text: string): string {
   return text.replace(
     /(mongodb(?:\+srv)?:\/\/[^:\s]+:)([^@\s]+)(@)/gi,
@@ -17,6 +14,7 @@ export function redactMongoUri(text: string): string {
   );
 }
 
+// Installe une seule fois les événements de suivi de MongoDB.
 function registerConnectionListeners(): void {
   if (listenersRegistered) {
     return;
@@ -37,6 +35,7 @@ function registerConnectionListeners(): void {
   });
 }
 
+// Ouvre la connexion vers la base MongoDB configurée.
 export async function connectDatabase(
   uri: string = env.mongodbUri,
   timeoutMs: number = 5000,
@@ -66,12 +65,14 @@ export async function connectDatabase(
   }
 }
 
+// Ferme la connexion MongoDB si elle est active.
 export async function disconnectDatabase(): Promise<void> {
   if (mongoose.connection.readyState !== 0) {
     await mongoose.disconnect();
   }
 }
 
+// Indique si Mongoose est actuellement connecté.
 export function isDatabaseConnected(): boolean {
   return mongoose.connection.readyState === 1;
 }

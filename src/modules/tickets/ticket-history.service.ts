@@ -1,4 +1,3 @@
-/** Enregistre l'audit d'un ticket et enrichit son historique avec les auteurs. */
 import { Types } from 'mongoose';
 import { toUserSummary, UserModel, UserSummary } from '../users/user.model';
 import {
@@ -20,6 +19,7 @@ export interface RecordTicketHistoryEntry {
   summary: string;
 }
 
+// Enregistre les événements d’audit produits par une modification.
 export async function recordTicketHistoryEntries(
   entries: RecordTicketHistoryEntry[],
 ): Promise<void> {
@@ -41,6 +41,7 @@ export async function recordTicketHistoryEntries(
   );
 }
 
+// Ajoute les informations publiques des auteurs à l’historique.
 export async function formatTicketHistoryWithUsers(
   entries: TicketHistoryDocument[],
 ): Promise<PublicTicketHistory[]> {

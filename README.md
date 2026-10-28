@@ -133,7 +133,3 @@ npm run build
 ```
 
 Les tests utilisent exclusivement `MONGODB_TEST_URI`. Par sécurité, le nom de cette base doit se terminer par `_test`.
-
-## Documentation du code
-
-Le fonctionnement détaillé de chaque couche et de chaque module est présenté dans [DOCUMENTATION_CODE.md](./DOCUMENTATION_CODE.md). Les fichiers TypeScript contiennent également des commentaires courts sur leur responsabilité et sur les règles métier sensibles.

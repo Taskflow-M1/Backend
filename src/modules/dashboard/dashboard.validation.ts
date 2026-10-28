@@ -1,4 +1,3 @@
-/** Valide les filtres optionnels du tableau de bord. */
 import { z } from 'zod';
 import { objectIdSchema } from '../../middlewares/validate.middleware';
 import { MESSAGES } from '../../utils/constants';

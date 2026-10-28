@@ -1,7 +1,3 @@
-/**
- * Cœur du workflow Jira-like : accès, création, recherche, assignation,
- * transitions Kanban, formatage des réponses et journal d'audit.
- */
 import { Types } from 'mongoose';
 import { ApiPaginatedListResponse } from '../../types/api.types';
 import { AppError } from '../../utils/app-error';
@@ -105,6 +101,7 @@ export interface KanbanBoardResponse {
   columns: KanbanColumn[];
 }
 
+// Construit le nom affiché d’un utilisateur avec un repli sur l’e-mail.
 function formatUserDisplayName(user: UserDocument | null): string {
   if (!user) {
     return 'un membre';
@@ -113,6 +110,7 @@ function formatUserDisplayName(user: UserDocument | null): string {
   return fullName.length > 0 ? fullName : user.email;
 }
 
+// Vérifie que l’utilisateur peut accéder au ticket demandé.
 export async function requireTicketAccess(
   ticketId: string,
   userId: string,
@@ -140,6 +138,7 @@ export async function requireTicketAccess(
   return { ticket, project, membership };
 }
 
+// Vérifie qu’un rôle peut effectuer la transition Kanban demandée.
 export function validateTicketStatusTransition(
   ticket: TicketDocument,
   nextStatus: TicketStatus,
@@ -196,6 +195,7 @@ export function validateTicketStatusTransition(
   throw AppError.forbidden(MESSAGES.TICKETS.STATUS_TESTER_TRANSITION_FORBIDDEN);
 }
 
+// Vérifie que la fonctionnalité appartient bien au projet du ticket.
 async function validateFeatureBelongsToProject(
   featureId: string,
   projectId: string,
@@ -210,6 +210,7 @@ async function validateFeatureBelongsToProject(
   }
 }
 
+// Vérifie que le responsable choisi appartient à l’équipe.
 async function validateAssigneeInTeam(
   assignedTo: string,
   teamId: string,
@@ -227,6 +228,7 @@ async function validateAssigneeInTeam(
   return targetUser;
 }
 
+// Enrichit une liste de tickets avec leurs utilisateurs associés.
 export async function formatTicketsWithUsers(
   tickets: TicketDocument[],
 ): Promise<PublicTicket[]> {
@@ -253,6 +255,7 @@ export async function formatTicketsWithUsers(
   return tickets.map((ticket) => toPublicTicket(ticket, usersById));
 }
 
+// Enrichit un ticket avec ses utilisateurs associés.
 async function formatSingleTicketWithUsers(
   ticket: TicketDocument,
 ): Promise<PublicTicket> {
@@ -260,6 +263,7 @@ async function formatSingleTicketWithUsers(
   return formatted;
 }
 
+// Construit le filtre MongoDB selon les droits et critères reçus.
 async function buildTicketMongoFilter(
   accessibleProjectIds: Types.ObjectId[],
   userId: string,
@@ -351,6 +355,7 @@ async function buildTicketMongoFilter(
   return andConditions.length === 1 ? andConditions[0] : { $and: andConditions };
 }
 
+// Crée la ressource après validation des droits et des données.
 export async function createTicket(
   creatorId: string,
   input: CreateTicketInput,
@@ -441,6 +446,7 @@ export async function createTicket(
   return formatSingleTicketWithUsers(createdTicket);
 }
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listAccessibleTickets(
   userId: string,
   query: ListTicketsQuery = {},
@@ -505,6 +511,7 @@ export async function listAccessibleTickets(
   };
 }
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listMyAssignedTickets(
   userId: string,
   query: ListAssignedMeTicketsQuery = {},
@@ -512,6 +519,7 @@ export async function listMyAssignedTickets(
   return listAccessibleTickets(userId, { ...query, assignedTo: 'me' });
 }
 
+// Regroupe les tickets du projet dans les colonnes Kanban.
 export async function getProjectKanbanBoard(
   projectId: string,
   userId: string,
@@ -566,6 +574,7 @@ export async function getProjectKanbanBoard(
   };
 }
 
+// Récupère la ressource demandée après contrôle de son accès.
 export async function getTicketById(
   ticketId: string,
   userId: string,
@@ -574,6 +583,7 @@ export async function getTicketById(
   return formatSingleTicketWithUsers(ticket);
 }
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listTicketHistory(
   ticketId: string,
   userId: string,
@@ -590,6 +600,7 @@ export async function listTicketHistory(
   return formatTicketHistoryWithUsers(entries);
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateTicket(
   ticketId: string,
   userId: string,
@@ -821,6 +832,7 @@ export async function updateTicket(
   return formatSingleTicketWithUsers(ticket);
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateTicketStatus(
   ticketId: string,
   userId: string,
@@ -877,6 +889,7 @@ export async function updateTicketStatus(
   return formatSingleTicketWithUsers(ticket);
 }
 
+// Assigne la ressource à l’utilisateur autorisé demandé.
 export async function assignTicket(
   ticketId: string,
   userId: string,
@@ -947,6 +960,7 @@ export async function assignTicket(
   return formatSingleTicketWithUsers(ticket);
 }
 
+// Supprime la ressource après vérification des autorisations.
 export async function deleteTicket(
   ticketId: string,
   userId: string,

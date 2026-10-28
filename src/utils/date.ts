@@ -1,7 +1,6 @@
-/** Fonctions communes de validation et de formatage des dates métier. */
 const ISO_DATE_ONLY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
-// Checks that a string is a real civil calendar date (rejects e.g. 2026-02-30 or 2025-02-29)
+// Vérifie que la valeur est une vraie date, par exemple pas le 30 février.
 export function isRealCalendarDate(value: string): boolean {
   if (!ISO_DATE_ONLY_REGEX.test(value)) {
     return false;
@@ -25,6 +24,7 @@ export function isRealCalendarDate(value: string): boolean {
   );
 }
 
+// Retourne la date UTC du jour au format YYYY-MM-DD.
 export function getTodayDateString(): string {
   return new Date().toISOString().slice(0, 10);
 }

@@ -1,7 +1,3 @@
-/**
- * Gère le cycle de vie des projets et applique les droits issus de l'équipe.
- * La suppression nettoie également les données métier dépendantes.
- */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { CommentModel } from '../comments/comment.model';
@@ -32,6 +28,7 @@ export interface ProjectWithRole extends PublicProject {
   myRole: TeamRole;
 }
 
+// Reconnaît une erreur MongoDB causée par une valeur déjà utilisée.
 function isMongoDuplicateKeyError(err: unknown): boolean {
   return (
     typeof err === 'object' &&
@@ -41,6 +38,7 @@ function isMongoDuplicateKeyError(err: unknown): boolean {
   );
 }
 
+// Vérifie l’appartenance au projet et retourne le rôle associé.
 export async function requireProjectAccess(
   projectId: string,
   userId: string,
@@ -70,6 +68,7 @@ export async function requireProjectAccess(
   return { project, membership };
 }
 
+// Crée la ressource après validation des droits et des données.
 export async function createProject(
   creatorId: string,
   input: CreateProjectInput,
@@ -110,6 +109,7 @@ export async function createProject(
   }
 }
 
+// Retourne la liste demandée en respectant les droits de l’utilisateur.
 export async function listAccessibleProjects(
   userId: string,
   teamId?: string,
@@ -146,6 +146,7 @@ export async function listAccessibleProjects(
   }));
 }
 
+// Récupère la ressource demandée après contrôle de son accès.
 export async function getProjectById(
   projectId: string,
   userId: string,
@@ -158,6 +159,7 @@ export async function getProjectById(
   };
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateProject(
   projectId: string,
   userId: string,
@@ -234,6 +236,7 @@ export async function updateProject(
   }
 }
 
+// Supprime la ressource après vérification des autorisations.
 export async function deleteProject(
   projectId: string,
   userId: string,

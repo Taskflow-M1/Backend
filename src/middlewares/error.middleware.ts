@@ -1,7 +1,3 @@
-/**
- * Transforme toutes les erreurs en une réponse JSON homogène et évite
- * d'exposer des détails techniques ou des secrets au client.
- */
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { ZodError } from 'zod';
@@ -12,6 +8,7 @@ import { AppError } from '../utils/app-error';
 import { ERROR_CODES, MESSAGES } from '../utils/constants';
 import { formatZodError } from './validate.middleware';
 
+// Détecte une requête contenant un JSON invalide.
 function isMalformedJsonError(err: unknown): boolean {
   return (
     err instanceof SyntaxError &&
@@ -21,6 +18,7 @@ function isMalformedJsonError(err: unknown): boolean {
   );
 }
 
+// Détecte un corps HTTP qui dépasse la taille autorisée.
 function isPayloadTooLargeError(err: unknown): boolean {
   return (
     typeof err === 'object' &&
@@ -30,6 +28,7 @@ function isPayloadTooLargeError(err: unknown): boolean {
   );
 }
 
+// Retourne une erreur uniforme lorsqu’aucune route ne correspond.
 export function notFoundMiddleware(
   _req: Request,
   _res: Response,
@@ -40,7 +39,7 @@ export function notFoundMiddleware(
   );
 }
 
-// Express requires 4 parameters to identify an error-handling middleware
+// Express exige quatre paramètres pour reconnaître un middleware d'erreur.
 export function errorMiddleware(
   err: unknown,
   _req: Request,

@@ -1,4 +1,3 @@
-/** Valide le contenu envoyé lors de la création ou modification d'un commentaire. */
 import { z } from 'zod';
 import { MESSAGES } from '../../utils/constants';
 

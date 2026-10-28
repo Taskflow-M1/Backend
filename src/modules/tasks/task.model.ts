@@ -1,4 +1,3 @@
-/** Modèle MongoDB d'une tâche privée appartenant à un seul utilisateur. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export const TASK_STATUSES = ['todo', 'doing', 'done'] as const;
@@ -72,6 +71,7 @@ const taskSchema = new Schema<ITask>(
 
 taskSchema.index({ ownerId: 1, createdAt: -1 });
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicTask(task: TaskDocument): PublicTask {
   return {
     id: task._id.toString(),

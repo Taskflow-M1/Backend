@@ -1,4 +1,3 @@
-/** Valide les équipes, les invitations de membres et les changements de rôle. */
 import { z } from 'zod';
 import { objectIdSchema } from '../../middlewares/validate.middleware';
 import { MESSAGES } from '../../utils/constants';

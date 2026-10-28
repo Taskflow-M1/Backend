@@ -1,4 +1,3 @@
-/** Expose la spécification OpenAPI brute et l'interface Swagger interactive. */
 import { Request, Response, Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import { openApiSpec } from '../../config/swagger';

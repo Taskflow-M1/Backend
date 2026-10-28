@@ -1,7 +1,3 @@
-/**
- * Modèle MongoDB du ticket Jira-like : type, priorité, statut, responsable,
- * projet, fonctionnalité et numéro séquentiel lisible.
- */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 import { UserSummary } from '../users/user.model';
 
@@ -156,6 +152,7 @@ ticketSchema.index({ projectId: 1, status: 1, createdAt: -1 });
 ticketSchema.index({ assignedTo: 1, status: 1 });
 ticketSchema.index({ featureId: 1, status: 1 });
 
+// Transforme le document MongoDB en objet public sans donnée sensible.
 export function toPublicTicket(
   ticket: TicketDocument,
   usersById?: ReadonlyMap<string, UserSummary>,

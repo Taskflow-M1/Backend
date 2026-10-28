@@ -1,4 +1,3 @@
-/** Adapte les requêtes HTTP d'authentification aux services métier. */
 import { Request, Response } from 'express';
 import {
   loginUser,
@@ -13,6 +12,7 @@ import {
   VerifyEmailCodeInput,
 } from './auth.validation';
 
+// Traite la requête HTTP pour démarrer une inscription.
 export async function registerHandler(
   req: Request,
   res: Response,
@@ -21,6 +21,7 @@ export async function registerHandler(
   res.status(200).json(result);
 }
 
+// Traite la requête HTTP pour connecter un utilisateur.
 export async function loginHandler(
   req: Request,
   res: Response,
@@ -29,6 +30,7 @@ export async function loginHandler(
   res.status(200).json(result);
 }
 
+// Traite la requête HTTP pour envoyer un nouveau code de vérification.
 export async function sendVerificationCodeHandler(
   req: Request,
   res: Response,
@@ -39,6 +41,7 @@ export async function sendVerificationCodeHandler(
   res.status(200).json(result);
 }
 
+// Traite la requête HTTP pour valider le code et terminer l’inscription.
 export async function verifyEmailCodeHandler(
   req: Request,
   res: Response,

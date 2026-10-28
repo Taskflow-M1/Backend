@@ -1,7 +1,3 @@
-/**
- * Gère le profil utilisateur, la recherche contrôlée et le changement sécurisé
- * du mot de passe après vérification de l'ancien secret.
- */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { hashPassword, verifyPassword } from '../../utils/password';
@@ -11,6 +7,7 @@ import { UserSummary } from '../teams/team.service';
 import { IUser, PublicUser, toPublicUser, UserModel } from './user.model';
 import { UpdatePasswordInput, UpdateProfileInput } from './user.validation';
 
+// Recherche des utilisateurs pour un administrateur d’équipe.
 export async function searchUsersForTeamAdmin(
   requesterId: string,
   search?: string,
@@ -49,6 +46,7 @@ export async function searchUsersForTeamAdmin(
   }));
 }
 
+// Récupère la ressource demandée après contrôle de son accès.
 export async function getMyProfile(userId: string): Promise<PublicUser> {
   const user = await UserModel.findById(userId);
 
@@ -59,6 +57,7 @@ export async function getMyProfile(userId: string): Promise<PublicUser> {
   return toPublicUser(user);
 }
 
+// Met à jour la ressource après validation des droits et des données.
 export async function updateMyProfile(
   userId: string,
   input: UpdateProfileInput,
@@ -89,6 +88,7 @@ export async function updateMyProfile(
   return toPublicUser(updatedUser);
 }
 
+// Vérifie l’ancien mot de passe avant d’enregistrer le nouveau.
 export async function updateMyPassword(
   userId: string,
   input: UpdatePasswordInput,
