@@ -1,6 +1,16 @@
 import { Request, Response } from 'express';
-import { loginUser, registerUser } from './auth.service';
-import { LoginInput, RegisterInput } from './auth.validation';
+import {
+  loginUser,
+  registerUser,
+  requestVerificationCode,
+  verifyEmailCodeAndRegister,
+} from './auth.service';
+import {
+  LoginInput,
+  RegisterInput,
+  SendVerificationCodeInput,
+  VerifyEmailCodeInput,
+} from './auth.validation';
 
 export async function registerHandler(
   req: Request,
@@ -18,3 +28,22 @@ export async function loginHandler(
   res.status(200).json(result);
 }
 
+export async function sendVerificationCodeHandler(
+  req: Request,
+  res: Response,
+): Promise<void> {
+  const result = await requestVerificationCode(
+    req.body as SendVerificationCodeInput,
+  );
+  res.status(200).json(result);
+}
+
+export async function verifyEmailCodeHandler(
+  req: Request,
+  res: Response,
+): Promise<void> {
+  const result = await verifyEmailCodeAndRegister(
+    req.body as VerifyEmailCodeInput,
+  );
+  res.status(201).json(result);
+}

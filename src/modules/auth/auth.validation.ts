@@ -40,6 +40,27 @@ export const loginSchema = z
   })
   .strict();
 
+export const sendVerificationCodeSchema = z
+  .object({
+    email: emailSchema,
+    firstName: z
+      .string({ error: MESSAGES.AUTH.FIRST_NAME_INVALID })
+      .trim()
+      .min(1, MESSAGES.AUTH.FIRST_NAME_INVALID)
+      .max(60, MESSAGES.AUTH.FIRST_NAME_INVALID)
+      .optional(),
+  })
+  .strict();
+
+export const verifyEmailCodeSchema = registerSchema.extend({
+  code: z
+    .string({ error: MESSAGES.AUTH.VERIFICATION_CODE_INVALID })
+    .regex(/^\d{4}$/, MESSAGES.AUTH.VERIFICATION_CODE_INVALID),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
-
+export type SendVerificationCodeInput = z.infer<
+  typeof sendVerificationCodeSchema
+>;
+export type VerifyEmailCodeInput = z.infer<typeof verifyEmailCodeSchema>;

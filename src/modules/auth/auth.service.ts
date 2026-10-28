@@ -6,11 +6,30 @@ import {
   verifyPasswordTimingSafe,
 } from '../../utils/password';
 import { PublicUser, toPublicUser, UserModel } from '../users/user.model';
-import { LoginInput, RegisterInput } from './auth.validation';
+import {
+  LoginInput,
+  RegisterInput,
+  SendVerificationCodeInput,
+  VerifyEmailCodeInput,
+} from './auth.validation';
+import {
+  cancelVerificationCode,
+  consumeVerificationCode,
+  createVerificationCode,
+  EMAIL_VERIFICATION_COOLDOWN_SECONDS,
+  EMAIL_VERIFICATION_TTL_SECONDS,
+} from './email-verification.store';
+import { sendVerificationEmail } from './verification-email.service';
 
 export interface AuthResponse {
   user: PublicUser;
   token: string;
+}
+
+export interface VerificationCodeSentResponse {
+  message: string;
+  expiresInSeconds: number;
+  cooldownSeconds: number;
 }
 
 function isMongoDuplicateKeyError(err: unknown): boolean {
@@ -88,4 +107,48 @@ export async function loginUser(input: LoginInput): Promise<AuthResponse> {
     user: publicUser,
     token,
   };
+}
+
+export async function requestVerificationCode(
+  input: SendVerificationCodeInput,
+): Promise<VerificationCodeSentResponse> {
+  const existingUser = await UserModel.findOne({ email: input.email }).lean();
+  if (existingUser) {
+    throw AppError.conflict(
+      MESSAGES.AUTH.EMAIL_ALREADY_USED,
+      ERROR_CODES.EMAIL_ALREADY_USED,
+    );
+  }
+
+  const code = createVerificationCode(input.email);
+
+  try {
+    await sendVerificationEmail(input.email, code, input.firstName);
+  } catch (_err) {
+    cancelVerificationCode(input.email, code);
+    throw new AppError(
+      500,
+      ERROR_CODES.INTERNAL_ERROR,
+      MESSAGES.AUTH.VERIFICATION_EMAIL_FAILED,
+    );
+  }
+
+  return {
+    message: MESSAGES.AUTH.VERIFICATION_CODE_SENT,
+    expiresInSeconds: EMAIL_VERIFICATION_TTL_SECONDS,
+    cooldownSeconds: EMAIL_VERIFICATION_COOLDOWN_SECONDS,
+  };
+}
+
+export async function verifyEmailCodeAndRegister(
+  input: VerifyEmailCodeInput,
+): Promise<AuthResponse> {
+  consumeVerificationCode(input.email, input.code);
+
+  return registerUser({
+    email: input.email,
+    password: input.password,
+    firstName: input.firstName,
+    lastName: input.lastName,
+  });
 }
