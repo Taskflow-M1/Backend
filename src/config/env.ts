@@ -26,7 +26,11 @@ function parseCorsOrigins(rawOrigins: string | undefined): string[] {
 
   // Keep the local Vite development origin available even when Railway (or
   // another host) sets CORS_ORIGIN to the deployed frontend domain.
-  return [...new Set(['http://localhost:5173', ...configuredOrigins])];
+  return [...new Set([
+    'http://localhost:5173',
+    'https://taskflow-chi-steel.vercel.app',
+    ...configuredOrigins,
+  ])];
 }
 
 // Choisit et valide l’URI MongoDB selon l’environnement.
