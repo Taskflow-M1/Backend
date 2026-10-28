@@ -1,3 +1,4 @@
+/** Modèle MongoDB d'une fonctionnalité regroupant des tickets d'un projet. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export interface IFeature {
@@ -85,4 +86,3 @@ export function toPublicFeature(feature: FeatureDocument): PublicFeature {
 export const FeatureModel =
   (mongoose.models.Feature as mongoose.Model<IFeature>) ||
   mongoose.model<IFeature>('Feature', featureSchema);
-

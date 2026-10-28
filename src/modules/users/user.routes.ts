@@ -1,3 +1,4 @@
+/** Déclare les routes privées du profil utilisateur et de l'annuaire. */
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.middleware';
 import { createRateLimiter } from '../../middlewares/rate-limit.middleware';

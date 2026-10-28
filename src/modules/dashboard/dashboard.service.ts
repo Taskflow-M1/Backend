@@ -1,3 +1,7 @@
+/**
+ * Agrège les équipes, projets et tickets accessibles pour produire les KPI,
+ * graphiques et listes récentes affichés sur le tableau de bord.
+ */
 import { Types } from 'mongoose';
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
@@ -547,4 +551,3 @@ export async function listTeamRecentActivity(
 
   return enrichActivityItems(historyDocs, projectsById);
 }
-

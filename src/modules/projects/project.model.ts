@@ -1,3 +1,4 @@
+/** Modèle MongoDB d'un projet appartenant à une équipe TaskFlow. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export interface IProject {
@@ -98,4 +99,3 @@ export function toPublicProject(project: ProjectDocument): PublicProject {
 export const ProjectModel =
   (mongoose.models.Project as mongoose.Model<IProject>) ||
   mongoose.model<IProject>('Project', projectSchema);
-

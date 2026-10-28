@@ -1,3 +1,4 @@
+/** Gère les entrées et sorties HTTP des équipes, membres et rôles. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -120,4 +121,3 @@ export async function removeTeamMemberHandler(
   );
   res.status(204).send();
 }
-

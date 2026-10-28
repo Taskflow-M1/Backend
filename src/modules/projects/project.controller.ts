@@ -1,3 +1,4 @@
+/** Traduit les requêtes HTTP en opérations métier sur les projets. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import {

@@ -1,3 +1,4 @@
+/** Adapte les requêtes HTTP aux opérations de discussion sur les tickets. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -53,4 +54,3 @@ export async function deleteCommentHandler(
   await deleteComment(String(req.params.id), userId);
   res.status(204).send();
 }
-

@@ -1,3 +1,4 @@
+/** Retourne les indicateurs du tableau de bord et l'activité récente. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -32,4 +33,3 @@ export async function listTeamActivityHandler(
   );
   res.status(200).json({ items });
 }
-

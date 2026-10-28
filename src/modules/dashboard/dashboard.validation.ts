@@ -1,3 +1,4 @@
+/** Valide les filtres optionnels du tableau de bord. */
 import { z } from 'zod';
 import { objectIdSchema } from '../../middlewares/validate.middleware';
 import { MESSAGES } from '../../utils/constants';
@@ -29,4 +30,3 @@ export const teamActivityQuerySchema = z
 
 export type DashboardQuery = z.infer<typeof dashboardQuerySchema>;
 export type TeamActivityQuery = z.infer<typeof teamActivityQuerySchema>;
-

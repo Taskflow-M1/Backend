@@ -1,3 +1,7 @@
+/**
+ * Protège les routes privées en validant le Bearer token et en chargeant
+ * l'utilisateur authentifié dans la requête Express.
+ */
 import { NextFunction, Request, Response } from 'express';
 import { UserModel } from '../modules/users/user.model';
 import { AuthenticatedUser } from '../types/auth.types';
@@ -58,4 +62,3 @@ export function getAuthenticatedUser(req: Request): AuthenticatedUser {
   }
   return req.user;
 }
-

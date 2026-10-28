@@ -1,3 +1,4 @@
+/** Valide le profil, l'avatar, la recherche et les changements de mot de passe. */
 import { z } from 'zod';
 import { MESSAGES } from '../../utils/constants';
 
@@ -134,4 +135,3 @@ export const searchUsersQuerySchema = z
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
 export type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>;
 export type SearchUsersQuery = z.infer<typeof searchUsersQuerySchema>;
-

@@ -1,3 +1,4 @@
+/** Modèle MongoDB d'une tâche privée appartenant à un seul utilisateur. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export const TASK_STATUSES = ['todo', 'doing', 'done'] as const;
@@ -86,4 +87,3 @@ export function toPublicTask(task: TaskDocument): PublicTask {
 export const TaskModel =
   (mongoose.models.Task as mongoose.Model<ITask>) ||
   mongoose.model<ITask>('Task', taskSchema);
-

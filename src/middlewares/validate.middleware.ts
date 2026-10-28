@@ -1,3 +1,7 @@
+/**
+ * Valide les paramètres, la requête et le corps HTTP avec Zod avant
+ * d'appeler le contrôleur. Les données validées remplacent les données brutes.
+ */
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { z, ZodError, ZodType } from 'zod';
 import { AppError } from '../utils/app-error';
@@ -95,4 +99,3 @@ export function validate(schemas: ValidationSchemas): RequestHandler {
     next();
   };
 }
-

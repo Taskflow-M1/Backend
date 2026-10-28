@@ -1,3 +1,7 @@
+/**
+ * Point d'entrée du serveur. Il connecte MongoDB, démarre l'écoute HTTP
+ * et ferme proprement les ressources lors de l'arrêt du processus.
+ */
 import http from 'http';
 import app from './app';
 import { connectDatabase, disconnectDatabase } from './config/database';

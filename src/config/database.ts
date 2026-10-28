@@ -1,3 +1,7 @@
+/**
+ * Centralise la connexion MongoDB et masque les informations sensibles
+ * des URI avant de les écrire dans les journaux.
+ */
 import os from 'node:os';
 import mongoose from 'mongoose';
 import { env } from './env';
@@ -71,4 +75,3 @@ export async function disconnectDatabase(): Promise<void> {
 export function isDatabaseConnected(): boolean {
   return mongoose.connection.readyState === 1;
 }
-

@@ -1,3 +1,4 @@
+/** Valide les champs et les filtres utilisés par les fonctionnalités. */
 import { z } from 'zod';
 import { objectIdSchema } from '../../middlewares/validate.middleware';
 import { MESSAGES } from '../../utils/constants';
@@ -41,4 +42,3 @@ export const listFeaturesQuerySchema = z
 export type CreateFeatureInput = z.infer<typeof createFeatureSchema>;
 export type UpdateFeatureInput = z.infer<typeof updateFeatureSchema>;
 export type ListFeaturesQuery = z.infer<typeof listFeaturesQuerySchema>;
-

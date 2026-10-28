@@ -1,3 +1,4 @@
+/** Déclare les routes publiques d'inscription, de vérification et de connexion. */
 import { Router } from 'express';
 import { createRateLimiter } from '../../middlewares/rate-limit.middleware';
 import { validate } from '../../middlewares/validate.middleware';

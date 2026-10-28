@@ -1,3 +1,7 @@
+/**
+ * Stockage éphémère des codes de vérification. Seule leur empreinte est gardée
+ * en mémoire, avec expiration, délai de renvoi et limite d'essais.
+ */
 import {
   createHmac,
   randomInt,
@@ -52,6 +56,7 @@ export function createVerificationCode(email: string): string {
     );
   }
 
+  // padStart conserve les codes valides qui commencent par zéro.
   const code = randomInt(0, 10_000).toString().padStart(4, '0');
   verificationStore.set(email, {
     codeHash: hashCode(email, code),

@@ -1,3 +1,7 @@
+/**
+ * Charge et valide les variables d'environnement une seule fois.
+ * Le reste de l'application utilise ensuite cet objet typé et normalisé.
+ */
 import path from 'path';
 import dotenv from 'dotenv';
 

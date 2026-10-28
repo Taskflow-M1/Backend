@@ -1,3 +1,4 @@
+/** Hachage bcrypt et comparaison sécurisée des mots de passe. */
 import bcrypt from 'bcrypt';
 
 const BCRYPT_SALT_ROUNDS = 10;
@@ -27,4 +28,3 @@ export async function verifyPasswordTimingSafe(
   const matches = await bcrypt.compare(plainPassword, targetHash);
   return Boolean(passwordHash) && matches;
 }
-

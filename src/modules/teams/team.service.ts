@@ -1,3 +1,7 @@
+/**
+ * Gère les équipes et leurs membres en appliquant les rôles. Les règles
+ * protègent notamment le dernier administrateur contre un retrait accidentel.
+ */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { CommentModel } from '../comments/comment.model';
@@ -362,4 +366,3 @@ export async function removeTeamMember(
 
   await TeamMembershipModel.deleteOne({ _id: targetMembership._id });
 }
-

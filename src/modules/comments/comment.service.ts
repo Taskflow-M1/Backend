@@ -1,3 +1,7 @@
+/**
+ * Gère les commentaires en vérifiant l'accès au projet et les droits
+ * de l'auteur ou des responsables avant toute modification.
+ */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import {
@@ -124,4 +128,3 @@ export async function deleteComment(
 
   await CommentModel.findByIdAndDelete(commentId);
 }
-

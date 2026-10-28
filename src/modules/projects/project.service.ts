@@ -1,3 +1,7 @@
+/**
+ * Gère le cycle de vie des projets et applique les droits issus de l'équipe.
+ * La suppression nettoie également les données métier dépendantes.
+ */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { CommentModel } from '../comments/comment.model';
@@ -241,4 +245,3 @@ export async function deleteProject(
   await FeatureModel.deleteMany({ projectId });
   await ProjectModel.findByIdAndDelete(projectId);
 }
-

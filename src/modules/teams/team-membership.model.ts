@@ -1,3 +1,7 @@
+/**
+ * Modèle d'appartenance entre un utilisateur et une équipe, avec le rôle
+ * qui détermine ses permissions dans cette équipe.
+ */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export const TEAM_ROLES = [
@@ -47,4 +51,3 @@ teamMembershipSchema.index({ teamId: 1, userId: 1 }, { unique: true });
 export const TeamMembershipModel =
   (mongoose.models.TeamMembership as mongoose.Model<ITeamMembership>) ||
   mongoose.model<ITeamMembership>('TeamMembership', teamMembershipSchema);
-

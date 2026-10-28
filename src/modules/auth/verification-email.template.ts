@@ -1,3 +1,4 @@
+/** Génère les versions HTML et texte du mail de vérification TaskFlow. */
 import { env } from '../../config/env';
 
 function escapeHtml(value: string): string {

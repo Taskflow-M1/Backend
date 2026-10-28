@@ -1,3 +1,4 @@
+/** Gère les réponses HTTP liées aux fonctionnalités d'un projet. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -64,4 +65,3 @@ export async function deleteFeatureHandler(
   await deleteFeature(String(req.params.id), userId);
   res.status(204).send();
 }
-

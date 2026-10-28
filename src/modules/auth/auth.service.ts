@@ -1,3 +1,7 @@
+/**
+ * Porte le parcours d'authentification : envoi du code, création du compte
+ * après vérification, contrôle du mot de passe et émission du JWT.
+ */
 import { AppError } from '../../utils/app-error';
 import { ERROR_CODES, MESSAGES } from '../../utils/constants';
 import { signAccessToken } from '../../utils/jwt';
@@ -143,6 +147,7 @@ export async function requestVerificationCode(
 export async function requestRegistration(
   input: RegisterInput,
 ): Promise<VerificationCodeSentResponse> {
+  // Le mot de passe n'est ni stocké ni utilisé avant la validation du code.
   return requestVerificationCode({
     email: input.email,
     firstName: input.firstName,
@@ -152,6 +157,7 @@ export async function requestRegistration(
 export async function verifyEmailCodeAndRegister(
   input: VerifyEmailCodeInput,
 ): Promise<AuthResponse> {
+  // La consommation est atomique : un code correct ne peut servir qu'une fois.
   consumeVerificationCode(input.email, input.code);
 
   return registerUser({

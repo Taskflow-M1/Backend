@@ -1,3 +1,4 @@
+/** Gère les entrées et sorties HTTP du CRUD des tâches personnelles. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';
@@ -59,4 +60,3 @@ export async function deleteTaskHandler(
   await deleteTaskForOwner(ownerId, String(req.params.id));
   res.status(204).send();
 }
-

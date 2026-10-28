@@ -1,3 +1,4 @@
+/** Modèle MongoDB d'une équipe qui regroupe des membres et des projets. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 
 export interface ITeam {
@@ -67,4 +68,3 @@ export function toPublicTeam(team: TeamDocument): PublicTeam {
 export const TeamModel =
   (mongoose.models.Team as mongoose.Model<ITeam>) ||
   mongoose.model<ITeam>('Team', teamSchema);
-

@@ -1,3 +1,4 @@
+/** Modèle MongoDB d'un commentaire rattaché à un ticket et à son auteur. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 import { UserSummary } from '../users/user.model';
 
@@ -96,4 +97,3 @@ export function toPublicComment(
 export const CommentModel =
   (mongoose.models.Comment as mongoose.Model<IComment>) ||
   mongoose.model<IComment>('Comment', commentSchema);
-

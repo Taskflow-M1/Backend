@@ -1,3 +1,7 @@
+/**
+ * Réunit les codes d'erreur stables et les messages français de l'API.
+ * Les clients peuvent se baser sur les codes sans analyser les textes.
+ */
 export const ERROR_CODES = {
   INVALID_INPUT: 'INVALID_INPUT',
   UNAUTHORIZED: 'UNAUTHORIZED',

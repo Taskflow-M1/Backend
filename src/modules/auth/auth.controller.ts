@@ -1,3 +1,4 @@
+/** Adapte les requêtes HTTP d'authentification aux services métier. */
 import { Request, Response } from 'express';
 import {
   loginUser,

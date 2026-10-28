@@ -1,3 +1,7 @@
+/**
+ * Applique le CRUD des tâches en filtrant toujours par propriétaire.
+ * Ce filtrage empêche un utilisateur d'accéder aux tâches d'un autre compte.
+ */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { ITask, PublicTask, TaskModel, toPublicTask } from './task.model';
@@ -84,4 +88,3 @@ export async function deleteTaskForOwner(
     throw AppError.notFound(MESSAGES.TASKS.NOT_FOUND);
   }
 }
-

@@ -1,3 +1,4 @@
+/** Déclare le CRUD des équipes ainsi que la gestion de leurs membres. */
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.middleware';
 import {
@@ -82,4 +83,3 @@ teamRouter.delete(
 );
 
 export default teamRouter;
-

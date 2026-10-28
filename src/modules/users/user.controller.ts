@@ -1,3 +1,4 @@
+/** Gère les réponses HTTP du profil, du mot de passe et de l'annuaire. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import { ApiListResponse } from '../../types/api.types';

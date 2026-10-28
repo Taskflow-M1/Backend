@@ -1,3 +1,4 @@
+/** Adapte les endpoints HTTP aux opérations métier sur les tickets. */
 import { Request, Response } from 'express';
 import { getAuthenticatedUser } from '../../middlewares/auth.middleware';
 import {

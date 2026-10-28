@@ -1,3 +1,7 @@
+/**
+ * Gère les fonctionnalités et contrôle que l'utilisateur appartient au projet.
+ * Les écritures sensibles restent réservées aux rôles de pilotage.
+ */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { ProjectDocument, ProjectModel } from '../projects/project.model';

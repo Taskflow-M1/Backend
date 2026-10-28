@@ -1,3 +1,7 @@
+/**
+ * Modèle MongoDB du ticket Jira-like : type, priorité, statut, responsable,
+ * projet, fonctionnalité et numéro séquentiel lisible.
+ */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 import { UserSummary } from '../users/user.model';
 
@@ -183,4 +187,3 @@ export function toPublicTicket(
 export const TicketModel =
   (mongoose.models.Ticket as mongoose.Model<ITicket>) ||
   mongoose.model<ITicket>('Ticket', ticketSchema);
-

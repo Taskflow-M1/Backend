@@ -1,3 +1,7 @@
+/**
+ * Gère le profil utilisateur, la recherche contrôlée et le changement sécurisé
+ * du mot de passe après vérification de l'ancien secret.
+ */
 import { AppError } from '../../utils/app-error';
 import { MESSAGES } from '../../utils/constants';
 import { hashPassword, verifyPassword } from '../../utils/password';
@@ -111,4 +115,3 @@ export async function updateMyPassword(
     message: MESSAGES.USERS.PASSWORD_UPDATED,
   };
 }
-

@@ -1,3 +1,7 @@
+/**
+ * Construit le message de vérification et délègue son envoi à Resend.
+ * Le transport peut être remplacé pendant les tests sans envoyer de vrai mail.
+ */
 import fs from 'fs';
 import path from 'path';
 import { Resend } from 'resend';

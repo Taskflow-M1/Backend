@@ -1,3 +1,7 @@
+/**
+ * Modèle MongoDB d'un utilisateur et fonctions de conversion vers les formes
+ * publiques, qui ne contiennent jamais le hash du mot de passe.
+ */
 import mongoose, { HydratedDocument, Schema } from 'mongoose';
 
 export interface IUser {
@@ -100,4 +104,3 @@ export function toUserSummary(user: UserDocument): UserSummary {
 export const UserModel =
   (mongoose.models.User as mongoose.Model<IUser>) ||
   mongoose.model<IUser>('User', userSchema);
-

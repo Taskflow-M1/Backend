@@ -1,3 +1,4 @@
+/** Déclare le CRUD des projets et leurs vues tickets, fonctionnalités et Kanban. */
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.middleware';
 import {

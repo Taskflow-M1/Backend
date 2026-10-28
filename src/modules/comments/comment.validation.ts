@@ -1,3 +1,4 @@
+/** Valide le contenu envoyé lors de la création ou modification d'un commentaire. */
 import { z } from 'zod';
 import { MESSAGES } from '../../utils/constants';
 
@@ -21,4 +22,3 @@ export const updateCommentSchema = z
 
 export type CreateCommentInput = z.infer<typeof createCommentSchema>;
 export type UpdateCommentInput = z.infer<typeof updateCommentSchema>;
-

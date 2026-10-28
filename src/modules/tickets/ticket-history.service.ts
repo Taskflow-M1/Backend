@@ -1,3 +1,4 @@
+/** Enregistre l'audit d'un ticket et enrichit son historique avec les auteurs. */
 import { Types } from 'mongoose';
 import { toUserSummary, UserModel, UserSummary } from '../users/user.model';
 import {
@@ -58,4 +59,3 @@ export async function formatTicketHistoryWithUsers(
 
   return entries.map((entry) => toPublicTicketHistory(entry, usersById));
 }
-

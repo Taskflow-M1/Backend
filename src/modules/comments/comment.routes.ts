@@ -1,3 +1,4 @@
+/** Déclare les routes de lecture, création, modification et suppression des commentaires. */
 import { Router } from 'express';
 import { requireAuth } from '../../middlewares/auth.middleware';
 import {
@@ -27,4 +28,3 @@ commentRouter.delete(
 );
 
 export default commentRouter;
-

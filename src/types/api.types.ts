@@ -1,3 +1,4 @@
+/** Types partagés par les réponses JSON et la pagination de l'API. */
 import { ErrorCode } from '../utils/constants';
 
 export interface ApiErrorBody {
@@ -23,4 +24,3 @@ export interface PaginationMeta {
 export interface ApiPaginatedListResponse<T> extends ApiListResponse<T> {
   pagination: PaginationMeta;
 }
-

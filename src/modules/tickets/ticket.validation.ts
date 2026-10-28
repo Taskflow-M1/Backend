@@ -1,3 +1,4 @@
+/** Valide les tickets, leurs filtres, leur assignation et leurs transitions. */
 import { z } from 'zod';
 import { objectIdSchema } from '../../middlewares/validate.middleware';
 import { MESSAGES } from '../../utils/constants';

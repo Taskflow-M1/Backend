@@ -1,3 +1,4 @@
+/** Création et vérification des jetons JWT utilisés par l'authentification. */
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { env } from '../config/env';
 
@@ -34,4 +35,3 @@ export function verifyAccessToken(token: string): AccessTokenPayload {
     email: decoded.email,
   };
 }
-

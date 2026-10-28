@@ -1,3 +1,7 @@
+/**
+ * Cœur du workflow Jira-like : accès, création, recherche, assignation,
+ * transitions Kanban, formatage des réponses et journal d'audit.
+ */
 import { Types } from 'mongoose';
 import { ApiPaginatedListResponse } from '../../types/api.types';
 import { AppError } from '../../utils/app-error';

@@ -1,3 +1,7 @@
+/**
+ * Configure l'application Express : sécurité HTTP, CORS, lecture du JSON,
+ * routes de l'API et gestion centralisée des erreurs.
+ */
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';

@@ -1,3 +1,7 @@
+/**
+ * Transforme toutes les erreurs en une réponse JSON homogène et évite
+ * d'exposer des détails techniques ou des secrets au client.
+ */
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { ZodError } from 'zod';

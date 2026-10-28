@@ -1,3 +1,7 @@
+/**
+ * Erreur métier transportant le statut HTTP et le code public à retourner.
+ * Les méthodes statiques rendent les erreurs courantes faciles à construire.
+ */
 import { ERROR_CODES, ErrorCode, MESSAGES } from './constants';
 
 export class AppError extends Error {
@@ -35,4 +39,3 @@ export class AppError extends Error {
     return new AppError(409, code, message);
   }
 }
-

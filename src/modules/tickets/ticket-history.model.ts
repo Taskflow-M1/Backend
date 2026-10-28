@@ -1,3 +1,4 @@
+/** Modèle immuable des événements importants enregistrés sur un ticket. */
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 import { UserSummary } from '../users/user.model';
 
@@ -130,4 +131,3 @@ export function toPublicTicketHistory(
 export const TicketHistoryModel =
   (mongoose.models.TicketHistory as mongoose.Model<ITicketHistory>) ||
   mongoose.model<ITicketHistory>('TicketHistory', ticketHistorySchema);
-
