@@ -31,20 +31,20 @@ describe('Health, Authentication & Personal Tasks Isolation', () => {
   });
 
   describe('POST /api/auth/register & POST /api/auth/login', () => {
-    it('registers a user (201), normalizes email case-insensitively, and never exposes password hashes', async () => {
+    it('starts registration, sends a code and returns no user or token', async () => {
       const res = await request(app).post('/api/auth/register').send({
         email: '  Alice@Example.TEST  ',
         password: 'MotDePasse123!',
       });
 
-      expect(res.status).toBe(201);
-      expect(typeof res.body.token).toBe('string');
-      expect(res.body.token.split('.')).toHaveLength(3);
-      expect(typeof res.body.user.id).toBe('string');
-      expect(res.body.user.email).toBe('alice@example.test');
-      expect(res.body.user._id).toBeUndefined();
-      expect(res.body.user.password).toBeUndefined();
-      expect(res.body.user.passwordHash).toBeUndefined();
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({
+        message: expect.any(String),
+        expiresInSeconds: expect.any(Number),
+        cooldownSeconds: 60,
+      });
+      expect(res.body.token).toBeUndefined();
+      expect(res.body.user).toBeUndefined();
     });
 
     it('rejects duplicate email case-insensitively with 409 EMAIL_ALREADY_USED', async () => {
@@ -281,4 +281,3 @@ describe('Health, Authentication & Personal Tasks Isolation', () => {
     });
   });
 });
-

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import {
   loginUser,
-  registerUser,
+  requestRegistration,
   requestVerificationCode,
   verifyEmailCodeAndRegister,
 } from './auth.service';
@@ -16,8 +16,8 @@ export async function registerHandler(
   req: Request,
   res: Response,
 ): Promise<void> {
-  const result = await registerUser(req.body as RegisterInput);
-  res.status(201).json(result);
+  const result = await requestRegistration(req.body as RegisterInput);
+  res.status(200).json(result);
 }
 
 export async function loginHandler(

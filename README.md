@@ -69,6 +69,9 @@ Aucun secret réel ne doit jamais être commité dans Git (`.env` est ignoré pa
 | `MONGODB_TEST_URI` | URI MongoDB isolée utilisée uniquement par `npm test` (`*_test`) | `mongodb://127.0.0.1:27017/taskflow_test` |
 | `JWT_SECRET` | Clé secrète de signature JWT (`>= 32` caractères obligatoires en `production`) | `replace-with-a-random-secret-at-least-32-characters` |
 | `JWT_EXPIRES_IN` | Durée de validité des jetons JWT émis | `24h` |
+| `RESEND_API_KEY` | Clé API utilisée pour envoyer le code de vérification | Clé fournie par Resend |
+| `RESEND_FROM_EMAIL` | Adresse expéditrice vérifiée chez Resend | `TaskFlow <onboarding@resend.dev>` |
+| `EMAIL_VERIFICATION_TTL_MINUTES` | Durée de validité du code à 4 chiffres | `10` |
 
 ---
 
@@ -210,7 +213,9 @@ L'intégralité des schémas de requêtes/réponses est testable interactivement
 | Méthode | Route | Accès | Statuts principaux |
 |---|---|---|---|
 | `GET` | `/api/health` | Public | `200` (`{"status":"ok"}`) |
-| `POST` | `/api/auth/register` | Public | `201`, `400 INVALID_INPUT`, `409 EMAIL_ALREADY_USED` |
+| `POST` | `/api/auth/register` | Public | `200` (code envoyé, aucun token), `400`, `409`, `429` |
+| `POST` | `/api/auth/send-verification-code` | Public | `200` (renvoi du code), `400`, `409`, `429` |
+| `POST` | `/api/auth/verify-email-code` | Public | `201` (`{ user, token }`), `400`, `401`, `409` |
 | `POST` | `/api/auth/login` | Public | `200`, `400`, `401 UNAUTHORIZED`, `429 TOO_MANY_REQUESTS` |
 | `GET` | `/api/tasks` | Bearer JWT | `200` (`{"items":[...]}`), `400`, `401` |
 | `POST` | `/api/tasks` | Bearer JWT | `201`, `400`, `401` |
@@ -240,7 +245,10 @@ Cette section résume les conventions exactes garanties pour l'application React
    - Définir `VITE_API_URL=http://localhost:<PORT>/api` côté Frontend.
    - Vérifier que l'origine Vite (`http://localhost:5173`) figure dans `CORS_ORIGIN` côté `.env`.
 2. **Authentification Bearer JWT** :
-   - `POST /api/auth/login` et `POST /api/auth/register` retournent `{ user, token }`.
+   - `POST /api/auth/register` valide le formulaire et envoie le code à 4 chiffres, sans créer le compte et sans retourner de token.
+   - `POST /api/auth/send-verification-code` permet de renvoyer le code après le délai de sécurité de 60 secondes.
+   - `POST /api/auth/verify-email-code` reçoit `email`, `code`, `password`, `firstName` et `lastName`, puis crée le compte et retourne `{ user, token }` si le code est valide.
+   - `POST /api/auth/login` retourne également `{ user, token }` pour un compte existant.
    - Transmettre sur chaque appel privé l'en-tête :
      ```http
      Authorization: Bearer <token>

@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import request from 'supertest';
-import app from '../../src/app';
 import { connectDatabase, disconnectDatabase } from '../../src/config/database';
 import { env } from '../../src/config/env';
+import { registerUser } from '../../src/modules/auth/auth.service';
 import { PublicUser } from '../../src/modules/users/user.model';
 
 function assertSafeTestDatabase(): void {
@@ -50,30 +49,18 @@ export async function registerTestAccount(
     lastName?: string;
   } = {},
 ): Promise<RegisteredTestAccount> {
-  const payload: Record<string, string> = {
+  const payload = {
     email,
     password: options.password ?? 'Password123!',
+    firstName: options.firstName,
+    lastName: options.lastName,
   };
 
-  if (options.firstName !== undefined) {
-    payload.firstName = options.firstName;
-  }
-  if (options.lastName !== undefined) {
-    payload.lastName = options.lastName;
-  }
-
-  const res = await request(app).post('/api/auth/register').send(payload);
-
-  if (res.status !== 201) {
-    throw new Error(
-      `Failed to register test account "${email}": HTTP ${res.status} ${JSON.stringify(res.body)}`,
-    );
-  }
+  const result = await registerUser(payload);
 
   return {
-    user: res.body.user as PublicUser,
-    token: res.body.token as string,
-    authHeader: `Bearer ${res.body.token as string}`,
+    user: result.user,
+    token: result.token,
+    authHeader: `Bearer ${result.token}`,
   };
 }
-

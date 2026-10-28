@@ -95,6 +95,37 @@ describe('Email verification registration flow', () => {
     ]);
   });
 
+  it('starts registration by emailing a code without creating a user or returning a token', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      email: 'register@example.test',
+      password: 'MotDePasse123!',
+      firstName: 'Nora',
+      lastName: 'Petit',
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body.token).toBeUndefined();
+    expect(response.body.user).toBeUndefined();
+    expect(response.body.message).toEqual(expect.any(String));
+    expect(await UserModel.countDocuments()).toBe(0);
+    expect(emailTransport.sent).toHaveLength(1);
+
+    const code = codeFrom(emailTransport.sent[0]);
+    const verification = await request(app)
+      .post('/api/auth/verify-email-code')
+      .send({
+        email: 'register@example.test',
+        code,
+        password: 'MotDePasse123!',
+        firstName: 'Nora',
+        lastName: 'Petit',
+      });
+
+    expect(verification.status).toBe(201);
+    expect(verification.body.user.email).toBe('register@example.test');
+    expect(typeof verification.body.token).toBe('string');
+  });
+
   it('validates the code, consumes it, creates the user and returns the standard auth response', async () => {
     const email = 'new-user@example.test';
     const code = await sendCode(email, 'Lina');

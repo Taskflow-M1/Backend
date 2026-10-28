@@ -140,6 +140,15 @@ export async function requestVerificationCode(
   };
 }
 
+export async function requestRegistration(
+  input: RegisterInput,
+): Promise<VerificationCodeSentResponse> {
+  return requestVerificationCode({
+    email: input.email,
+    firstName: input.firstName,
+  });
+}
+
 export async function verifyEmailCodeAndRegister(
   input: VerifyEmailCodeInput,
 ): Promise<AuthResponse> {

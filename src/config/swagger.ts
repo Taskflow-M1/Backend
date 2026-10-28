@@ -113,7 +113,7 @@ export const openApiSpec: Record<string, unknown> = {
       '1. **Espace personnel & Authentification** (`/api/health`, `/api/auth/*`, `/api/tasks*`) avec isolation stricte des tâches personnelles par utilisateur.',
       '2. **Plateforme collaborative type Jira** (`/api/users*`, `/api/teams*`, `/api/projects*`, `/api/features*`, `/api/tickets*`, `/api/comments*`, `/api/dashboard`) avec gestion des rôles (`admin`, `project_manager`, `developer`, `tester`), tableau Kanban 4 colonnes, historique d\'audit et statistiques.',
       '',
-      '**Authentification** : cliquer sur **Authorize** et coller uniquement le jeton JWT obtenu via `POST /api/auth/login` ou `POST /api/auth/register`.',
+      '**Authentification** : cliquer sur **Authorize** et coller uniquement le jeton JWT obtenu via `POST /api/auth/login` ou après validation de l’inscription avec `POST /api/auth/verify-email-code`.',
     ].join('\n'),
   },
   servers: [
@@ -144,7 +144,7 @@ export const openApiSpec: Record<string, unknown> = {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
-        description: 'Jeton JWT signé (`HS256`) retourné par `/api/auth/register` ou `/api/auth/login`.',
+        description: 'Jeton JWT signé (`HS256`) retourné par `/api/auth/verify-email-code` ou `/api/auth/login`.',
       },
     },
     responses: standardErrorResponses,
@@ -420,7 +420,9 @@ export const openApiSpec: Record<string, unknown> = {
     '/api/auth/register': {
       post: {
         tags: ['Auth'],
-        summary: 'Créer un compte utilisateur et obtenir un jeton JWT',
+        summary: "Démarrer l'inscription et envoyer le code de vérification",
+        description:
+          "Valide les informations d'inscription et envoie un code à 4 chiffres. Aucun compte ni jeton JWT n'est créé avant la validation du code.",
         requestBody: {
           required: true,
           content: {
@@ -439,12 +441,25 @@ export const openApiSpec: Record<string, unknown> = {
           },
         },
         responses: {
-          '201': {
-            description: 'Compte créé avec succès',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/AuthResponse' } } },
+          '200': {
+            description: 'Code de vérification envoyé',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['message', 'expiresInSeconds', 'cooldownSeconds'],
+                  properties: {
+                    message: { type: 'string' },
+                    expiresInSeconds: { type: 'integer', example: 600 },
+                    cooldownSeconds: { type: 'integer', example: 60 },
+                  },
+                },
+              },
+            },
           },
           '400': { $ref: '#/components/responses/BadRequest400' },
           '409': { $ref: '#/components/responses/Conflict409' },
+          '429': { $ref: '#/components/responses/TooManyRequests429' },
         },
       },
     },
@@ -483,7 +498,7 @@ export const openApiSpec: Record<string, unknown> = {
         tags: ['Auth'],
         summary: "Envoyer un code de vérification d'adresse e-mail",
         description:
-          'Génère un code à 4 chiffres conservé uniquement en mémoire sous forme hachée pendant 10 minutes. Un délai de 60 secondes est imposé entre deux envois.',
+          "Renvoie un code à 4 chiffres après le délai de sécurité. Le code est conservé uniquement en mémoire sous forme hachée pendant 10 minutes.",
         requestBody: {
           required: true,
           content: {
@@ -528,7 +543,7 @@ export const openApiSpec: Record<string, unknown> = {
         tags: ['Auth'],
         summary: 'Valider le code e-mail et créer le compte',
         description:
-          "Consomme immédiatement le code éphémère, crée l'utilisateur et retourne le même objet `{ user, token }` que l'inscription standard.",
+          "Consomme immédiatement le code éphémère, crée l'utilisateur et retourne `{ user, token }`. Les informations d'inscription doivent être renvoyées avec le code.",
         requestBody: {
           required: true,
           content: {

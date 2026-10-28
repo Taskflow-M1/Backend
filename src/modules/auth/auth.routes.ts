@@ -30,6 +30,7 @@ const verificationEmailRateLimiter = createRateLimiter({
 
 authRouter.post(
   '/register',
+  verificationEmailRateLimiter,
   validate({ body: registerSchema }),
   registerHandler,
 );
